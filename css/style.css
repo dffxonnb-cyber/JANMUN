@@ -925,3 +925,85 @@ dialog::backdrop { background: #0008; }
   .front-actions { gap: 8px 14px; }
 }
 @media print { .mobile-dock { display: none !important; } }
+
+/* 13. Founding plate — all elements in normal document flow */
+.founding-plate {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 0;
+  min-width: 0;
+  padding: clamp(18px, 3vw, 34px);
+  background: #282b25;
+  color: #e8e0d0;
+}
+.founding-plate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #65685a;
+  font-size: 11px;
+}
+.founding-plate-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  align-items: center;
+  gap: clamp(16px, 3vw, 36px);
+  padding: clamp(22px, 3vw, 42px) 0;
+}
+.founding-characters {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  font: 500 clamp(64px, 8vw, 116px)/1.02 var(--serif);
+  color: #d8d0bd;
+}
+.founding-characters > span { display: block; }
+.founding-note {
+  margin: 0;
+  padding-left: clamp(12px, 2vw, 26px);
+  border-left: 1px solid #77796b;
+  font: 400 clamp(15px, 1.8vw, 22px)/1.8 var(--serif);
+  word-break: keep-all;
+}
+.founding-note > span { display: block; }
+.founding-plate-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36px;
+  gap: 18px;
+  align-items: end;
+  padding-top: 18px;
+  border-top: 1px solid #65685a;
+}
+.founding-plate-footer p {
+  margin: 0;
+  font: 400 clamp(12px, 1.2vw, 15px)/1.9 var(--serif);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.founding-seal {
+  display: grid;
+  place-items: center;
+  position: static;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  background: #824643;
+  color: #f5f2eb;
+  font: 500 19px/1 var(--serif);
+  justify-self: end;
+  transform: none;
+}
+@media (max-width: 800px) {
+  .founding-plate { padding: 20px; }
+  .founding-plate-body { padding: 22px 0; gap: 14px; }
+  .founding-characters { font-size: clamp(60px, 17vw, 92px); }
+  .founding-note { padding-left: 13px; font-size: 17px; }
+  .founding-plate-footer { gap: 14px; padding-top: 15px; }
+}
+@media (max-width: 350px) {
+  .founding-plate { padding: 16px; }
+  .founding-characters { font-size: 58px; }
+  .founding-note { font-size: 15px; }
+}
