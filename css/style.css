@@ -1021,3 +1021,139 @@ dialog::backdrop { background: #0008; }
   .nav.open { display: flex; }
   .nav a { display: flex; align-items: center; min-height: 44px; }
 }
+
+/* 15. Home typography system */
+#page-home {
+  --home-brand: clamp(60px, 6.2vw, 86px);
+  --home-lead: clamp(27px, 2.5vw, 34px);
+  --home-section: 25px;
+  --home-item: 20px;
+  --home-body: 15px;
+  --home-small: 12px;
+  --home-action: 13px;
+  --home-title-spacing: -.045em;
+  --home-body-spacing: -.015em;
+}
+#page-home .front-masthead {
+  align-items: center;
+  padding-block: 18px;
+}
+#page-home .front-title {
+  align-items: baseline;
+  gap: .23em;
+  font: 500 var(--home-brand)/1.2 var(--serif);
+  letter-spacing: -.08em;
+}
+#page-home .front-title > span {
+  font-size: .31em;
+  padding-top: 0;
+  letter-spacing: -.04em;
+}
+#page-home .front-imprint { gap: 5px; padding-bottom: 0; }
+#page-home .front-imprint > span:first-child {
+  font: 500 var(--home-action)/1.6 var(--sans);
+  letter-spacing: .14em;
+}
+#page-home .edition-line,
+#page-home .front-imprint,
+#page-home .eyebrow,
+#page-home .front-kicker,
+#page-home .entry-no,
+#page-home .entry-detail,
+#page-home .front-art figcaption,
+#page-home .front-art figcaption span:first-child,
+#page-home .founding-plate-header {
+  font: 500 var(--home-small)/1.65 var(--sans);
+  letter-spacing: 0;
+}
+#page-home .front-copy h2 {
+  font: 500 var(--home-lead)/1.55 var(--serif);
+  letter-spacing: var(--home-title-spacing);
+  margin-block: 12px 14px;
+  max-width: 15em;
+  text-wrap: pretty;
+}
+#page-home .section-top h2,
+#page-home .front-invitation h2 {
+  font: 500 var(--home-section)/1.5 var(--serif);
+  letter-spacing: var(--home-title-spacing);
+  margin-block: 5px 9px;
+}
+#page-home .front-contents .entry h3,
+#page-home .project h3 {
+  font: 500 var(--home-item)/1.55 var(--serif);
+  letter-spacing: var(--home-title-spacing);
+}
+#page-home .project h3 { margin-block: 10px 8px; }
+#page-home .front-margin blockquote {
+  font: 500 var(--home-item)/1.85 var(--serif);
+  letter-spacing: var(--home-title-spacing);
+  margin-block: 18px;
+}
+#page-home .front-copy p,
+#page-home .project p,
+#page-home .front-invitation p,
+#page-home .front-contents .entry p {
+  font: 400 var(--home-body)/1.8 var(--sans);
+  letter-spacing: var(--home-body-spacing);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+#page-home .primary,
+#page-home .outline,
+#page-home .textlink,
+#page-home .project-link,
+#page-home .quiet-button,
+#page-home .front-margin > a,
+#page-home .home-notice a,
+#page-home .resume button {
+  font: 500 var(--home-action)/1.65 var(--sans);
+  letter-spacing: 0;
+}
+#page-home .resume a { font: 500 var(--home-body)/1.8 var(--serif); }
+#page-home .founding-characters { font: 500 clamp(60px, 6.5vw, 88px)/1.05 var(--serif); }
+#page-home .founding-note {
+  font: 400 var(--home-item)/1.7 var(--serif);
+  letter-spacing: var(--home-title-spacing);
+}
+#page-home .founding-plate-footer p {
+  font: 400 var(--home-body)/1.8 var(--serif);
+  letter-spacing: var(--home-body-spacing);
+}
+#page-home .founding-plate-body { padding-block: clamp(20px, 2.5vw, 30px); }
+#page-home .founding-seal { font: 500 19px/1 var(--serif); }
+#page-home .front-contents .entry {
+  grid-template-columns: 28px minmax(0, 1fr) minmax(0, 1.35fr) 18px;
+  min-height: 86px;
+}
+#page-home .front-contents .entry p { font-size: var(--home-action); }
+#page-home .project { padding-block: 22px; }
+#page-home .project p { margin-bottom: 15px; }
+@media (max-width: 1050px) {
+  #page-home .front-contents .entry { grid-template-columns: 25px minmax(0, 1fr) 18px; min-height: 78px; }
+}
+@media (max-width: 800px) {
+  #page-home {
+    --home-brand: clamp(49px, 13vw, 64px);
+    --home-lead: 26px;
+    --home-section: 22px;
+    --home-item: 19px;
+    --home-body: 15px;
+    --home-small: 12px;
+    --home-action: 13px;
+  }
+  #page-home .front-masthead { padding-block: 12px 15px; }
+  #page-home .front-imprint { max-width: 112px; }
+  #page-home .front-imprint > span:last-child { font-size: var(--home-small); }
+  #page-home .front-copy h2 { max-width: 20em; margin-block: 10px 12px; }
+  #page-home .founding-characters { font-size: clamp(58px, 16vw, 78px); }
+  #page-home .founding-plate-footer p { font-size: 14px; }
+  #page-home .project { padding-block: 18px; }
+  #page-home .front-contents .entry { padding-block: 14px; }
+}
+@media (max-width: 350px) {
+  #page-home { --home-brand: 46px; --home-lead: 24px; --home-section: 21px; --home-item: 18px; }
+  #page-home .front-imprint { max-width: 94px; }
+  #page-home .founding-note { font-size: 17px; }
+  #page-home .founding-plate-footer p { font-size: 13px; }
+}
