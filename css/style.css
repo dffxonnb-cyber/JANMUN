@@ -1475,3 +1475,49 @@ html[data-theme="dark"] .reading {
   #page-submission .submission-steps { grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 16px; }
   #page-submission .faq-answer { padding-left:28px; padding-right:4px; }
 }
+
+/* 21. Literary archive — a public record, separate from the private library. */
+#page-archive .archive-intro { display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:clamp(26px,4.4vw,60px); align-items:start; padding:36px 0 30px; border-bottom:1px solid var(--line); }
+#page-archive .archive-heading { min-width:0; }
+#page-archive .archive-rule { display:block; width:36px; height:3px; margin-bottom:21px; background:var(--accent); }
+#page-archive .archive-heading .eyebrow { color:var(--accent); font-size:13px; }
+#page-archive .archive-heading h1 { font:600 clamp(32px,3.5vw,48px)/1.35 var(--serif); letter-spacing:-.045em; margin:10px 0; }
+#page-archive .archive-heading p { color:var(--muted); margin:0; font-size:16px; }
+#page-archive .archive-intro-copy { min-width:0; font:400 17px/1.95 var(--serif); word-break:keep-all; }
+#page-archive .archive-intro-copy p { margin:0 0 12px; }
+#page-archive .archive-intro-copy p:last-child { margin-bottom:0; }
+#page-archive .archive-categories { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+#page-archive .archive-categories button { background:transparent; border:1px solid var(--line); color:var(--ink); padding:9px 12px; min-height:42px; font:500 14px/1.5 var(--sans); cursor:pointer; }
+#page-archive .archive-categories button[aria-pressed="true"] { color:var(--accent); border-color:var(--accent); box-shadow:inset 0 -2px var(--accent); }
+#page-archive .archive-categories button span { margin-left:6px; font-size:11px; color:var(--muted); }
+#page-archive .archive-categories button:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+#page-archive .archive-search { display:grid; grid-template-columns:minmax(180px,2fr) repeat(4,minmax(112px,1fr)); gap:8px; margin-bottom:20px; }
+#page-archive .archive-search > * { width:100%; min-width:0; font-size:14px; }
+#page-archive .archive-results-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+#page-archive .archive-results-head .archive-count { margin:0; font-size:13px; }
+#page-archive .archive-row { padding:20px 0; grid-template-columns:45px minmax(0,1fr) auto; }
+#page-archive .archive-row .eyebrow { color:var(--accent); align-self:start; margin-top:4px; }
+.archive-record-meta { display:block; color:var(--muted); font-size:12px; line-height:1.6; margin-bottom:6px; }
+#page-archive .archive-row h3 { font:500 25px/1.4 var(--serif); }
+#page-archive .archive-row p { font-size:14px; line-height:1.7; word-break:keep-all; }
+#page-archive .archive-row .outline { font-size:13px; }
+#page-archive .archive-footnote { color:var(--muted); font-size:13px; line-height:1.8; margin:24px 0 0; word-break:keep-all; }
+#page-archive .archive-empty-actions { margin-top:16px; }
+#page-archive .archive-empty-actions[hidden] { display:none; }
+@media(max-width:1000px) {
+  #page-archive .archive-search { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  #page-archive .archive-search input { grid-column:1/-1; }
+}
+@media(max-width:760px) {
+  #page-archive .archive-intro { grid-template-columns:1fr; gap:20px; padding-block:26px; }
+  #page-archive .archive-intro-copy { font-size:16px; }
+  #page-archive .archive-row { grid-template-columns:26px minmax(0,1fr); gap:8px 12px; }
+  #page-archive .archive-row > button { grid-column:2; }
+  #page-archive .archive-row h3 { font-size:21px; }
+  #page-archive .archive-categories { gap:6px; }
+  #page-archive .archive-categories button { padding:8px 10px; }
+}
+@media print {
+  #page-archive .archive-intro { display:block; }
+  #page-archive .archive-controls { display:none; }
+}
