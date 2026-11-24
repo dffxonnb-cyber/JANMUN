@@ -8,7 +8,7 @@
     { id: "ethics", n: "03", title: "창작 윤리", sub: "남긴 문장에 대한 책임", type: "창립 문서" },
     { id: "members", n: "04", title: "잔문 동인", sub: "서로의 가장 이른 독자로", type: "창립 문서" }
   ];
-  const pages = ["home", ...articles.map(article => article.id), "books", "submission", "archive", "saved"];
+  const pages = ["home", ...articles.map(article => article.id), "books", "submission", "archive", "saved", "news"];
 
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -121,6 +121,7 @@
 
     closeNav();
     if (dialog.open) dialog.close();
+    if ($("#quote-dialog").open) $("#quote-dialog").close();
     updateReading();
     if (id === "archive" || id === "saved") renderLists();
     if (changed) $("#main").focus({ preventScroll: true });
@@ -244,6 +245,7 @@
     fillList($("#saved-list"), articles.filter(article => state.saved.includes(article.id)),
       "아직 저장한 글이 없습니다. 아카이브에서 읽고 싶은 글을 저장해 보세요.");
     updateSaves();
+    renderLibrary();
   }
 
   function search() {
@@ -380,7 +382,208 @@
   window.addEventListener("scroll", updateProgress, { passive: true });
   window.addEventListener("resize", updateProgress);
 
-  // 07. Initialization
+  // 07. Private reading records and portable text exports
+  const storedQuotes = read("quotes", []);
+  const quotes = Array.isArray(storedQuotes) ? storedQuotes.filter(q =>
+    q && validIds.has(q.article) && typeof q.text === "string" && typeof q.id === "string") : [];
+  const storedNotes = read("notes", {});
+  const notes = Object.create(null);
+  for (const article of articles) {
+    if (typeof storedNotes?.[article.id] === "string" && storedNotes[article.id].trim()) {
+      notes[article.id] = storedNotes[article.id];
+    }
+  }
+  const quoteDialog = $("#quote-dialog");
+  let pendingSelection = null;
+
+  function libraryTab(name) {
+    $("[data-library-tab]").forEach(button => {
+      button.setAttribute("aria-pressed", String(button.dataset.libraryTab === name));
+    });
+    $(".library-panel").forEach(panel => { panel.hidden = panel.id !== "library-" + name; });
+  }
+
+  function recordButton(label, key, value) {
+    const button = element("button", "outline", label);
+    button.type = "button";
+    button.dataset[key] = value;
+    return button;
+  }
+
+  function renderLibrary() {
+    $("#finished-count").textContent = state.finished.length;
+    $("#quote-count").textContent = quotes.length;
+    $("#note-count").textContent = Object.keys(notes).length;
+
+    const quoteList = $("#quote-list");
+    quoteList.replaceChildren();
+    for (const quote of [...quotes].reverse()) {
+      const article = articles.find(a => a.id === quote.article);
+      const item = element("div", "record-item");
+      const meta = element("span", "eyebrow");
+      const source = element("a", "", article.title);
+      source.href = "#" + article.id;
+      meta.append(source);
+      const actions = element("div", "actions");
+      actions.append(recordButton("문장 복사", "quoteCopy", quote.id),
+        recordButton("삭제", "quoteRemove", quote.id));
+      item.append(meta, element("blockquote", "", quote.text), actions);
+      quoteList.append(item);
+    }
+    if (!quotes.length) quoteList.append(element("p", "empty", "아직 수집한 문장이 없습니다. 글의 문장 수집 버튼으로 시작하세요."));
+
+    const noteList = $("#note-list");
+    noteList.replaceChildren();
+    for (const article of articles) {
+      if (!notes[article.id]) continue;
+      const item = element("div", "record-item");
+      const source = element("a", "eyebrow", article.title + " ↗");
+      source.href = "#" + article.id;
+      const actions = element("div", "actions");
+      actions.append(recordButton("메모 수정", "noteEdit", article.id),
+        recordButton("삭제", "noteRemove", article.id));
+      item.append(source, element("p", "record-text", notes[article.id]), actions);
+      noteList.append(item);
+    }
+    if (!Object.keys(notes).length) noteList.append(element("p", "empty", "아직 독서 메모가 없습니다."));
+    fillList($("#history-list"), articles.filter(a => state.finished.includes(a.id)), "읽음 표시한 글이 아직 없습니다.");
+    updateSaves();
+  }
+
+  function addQuote(id, text) {
+    text = text.trim();
+    if (!text || !validIds.has(id)) return;
+    if (quotes.some(q => q.article === id && q.text === text)) {
+      notify("이미 수집한 문장입니다.");
+      return;
+    }
+    quotes.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8), article: id, text });
+    write("quotes", quotes);
+    renderLibrary();
+    notify("나의 서재에 문장을 남겼어요.");
+  }
+
+  function selectedQuote() {
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed || !selection.rangeCount || !validIds.has(state.page)) return null;
+    const prose = $("#page-" + state.page + " .prose");
+    const range = selection.getRangeAt(0);
+    if (!prose.contains(range.startContainer) || !prose.contains(range.endContainer)) return null;
+    const text = selection.toString().trim();
+    return text ? { article: state.page, text } : null;
+  }
+
+  function openQuote(id) {
+    const current = selectedQuote() || pendingSelection;
+    pendingSelection = null;
+    if (current?.article === id) {
+      addQuote(id, current.text);
+      return;
+    }
+    const options = $("#quote-options");
+    options.replaceChildren();
+    $("#page-" + id + " .prose p").forEach(paragraph => {
+      const button = element("button", "quote-option", paragraph.textContent.trim());
+      button.type = "button";
+      button.addEventListener("click", () => {
+        addQuote(id, paragraph.textContent);
+        quoteDialog.close();
+      });
+      options.append(button);
+    });
+    if (!quoteDialog.open) quoteDialog.showModal();
+  }
+
+  function openNote(id) {
+    const editor = $("[data-note-editor=" + id + "]");
+    const textarea = $("[data-note-text=" + id + "]");
+    editor.hidden = false;
+    textarea.value = notes[id] || "";
+    textarea.focus();
+  }
+
+  function saveNote(id) {
+    const value = $("[data-note-text=" + id + "]").value.trim();
+    if (value) notes[id] = value;
+    else delete notes[id];
+    write("notes", notes);
+    $("[data-note-editor=" + id + "]").hidden = true;
+    renderLibrary();
+    notify(value ? "독서 메모를 저장했어요." : "빈 메모는 저장하지 않았어요.");
+  }
+
+  async function copyText(value) {
+    try {
+      await navigator.clipboard.writeText(value);
+      notify("문장을 복사했어요.");
+    } catch {
+      window.prompt("문장을 복사하세요.", value);
+    }
+  }
+
+  function exportLibrary() {
+    const title = id => articles.find(a => a.id === id)?.title || id;
+    const sections = [
+      "잔문 — 나의 서재",
+      "[보관한 글]\n" + state.saved.map(title).join("\n"),
+      "[읽은 글]\n" + state.finished.map(title).join("\n"),
+      "[수집한 문장]\n" + quotes.map(q => title(q.article) + "\n" + q.text).join("\n\n"),
+      "[독서 메모]\n" + Object.keys(notes).map(id => title(id) + "\n" + notes[id]).join("\n\n")
+    ];
+    const url = URL.createObjectURL(new Blob([sections.join("\n\n")], { type: "text/plain;charset=utf-8" }));
+    const link = element("a");
+    link.href = url;
+    link.download = "janmun-reading-library.txt";
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    notify("서재 기록을 파일로 내려받았어요.");
+  }
+
+  $("#quote-close").addEventListener("click", () => quoteDialog.close());
+  quoteDialog.addEventListener("click", event => { if (event.target === quoteDialog) quoteDialog.close(); });
+  $("#library-export").addEventListener("click", exportLibrary);
+  document.addEventListener("selectionchange", () => {
+    const selection = selectedQuote();
+    if (selection) pendingSelection = selection;
+  });
+  window.addEventListener("hashchange", () => { pendingSelection = null; });
+  document.addEventListener("click", event => {
+    const button = event.target.closest("button");
+    if (!button) return;
+    const data = button.dataset;
+    if (data.libraryTab) libraryTab(data.libraryTab);
+    if (data.collect) openQuote(data.collect);
+    if (data.noteOpen) openNote(data.noteOpen);
+    if (data.noteClose) $("[data-note-editor=" + data.noteClose + "]").hidden = true;
+    if (data.noteSave) saveNote(data.noteSave);
+    if (data.noteEdit) {
+      location.hash = data.noteEdit;
+      setTimeout(() => openNote(data.noteEdit), 50);
+    }
+    if (data.noteRemove) {
+      delete notes[data.noteRemove];
+      write("notes", notes);
+      renderLibrary();
+      notify("메모를 삭제했어요.");
+    }
+    if (data.quoteCopy) {
+      const quote = quotes.find(q => q.id === data.quoteCopy);
+      if (quote) copyText(quote.text);
+    }
+    if (data.quoteRemove) {
+      const index = quotes.findIndex(q => q.id === data.quoteRemove);
+      if (index !== -1) {
+        quotes.splice(index, 1);
+        write("quotes", quotes);
+        renderLibrary();
+        notify("문장을 삭제했어요.");
+      }
+    }
+  });
+
+  // 08. Initialization
   applyTheme();
   applySize();
   renderLists();
