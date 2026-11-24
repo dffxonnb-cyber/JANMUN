@@ -1439,3 +1439,39 @@ html[data-theme="dark"] .reading {
   #page-books .series-intro { display: block; padding-block: 18px; }
   #page-books .series-heading { margin-bottom: 16px; }
 }
+
+/* 20. Submission: editorial FAQ, category filter and preparation area. */
+#page-submission .submission-faq-layout { display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:clamp(26px,4.4vw,60px); align-items:start; padding-block:32px 44px; }
+#page-submission .faq-nav h2 { font:600 clamp(26px,2.7vw,36px)/1.4 var(--serif); margin:8px 0 14px; letter-spacing:-.035em; }
+#page-submission .faq-nav > p { color:var(--muted); font-size:15px; line-height:1.85; max-width:30em; }
+#page-submission .faq-nav .eyebrow { color:var(--accent); }
+#page-submission .faq-filters { display:flex; flex-wrap:wrap; gap:8px; margin:22px 0; }
+#page-submission .faq-filters button { border:1px solid var(--line); background:transparent; color:var(--ink); padding:8px 13px; min-height:40px; font:500 14px/1.5 var(--sans); cursor:pointer; }
+#page-submission .faq-filters button[aria-pressed="true"] { color:var(--accent); border-color:var(--accent); box-shadow:inset 0 -2px var(--accent); }
+#page-submission .faq-filters button:focus-visible, #page-submission summary:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+#page-submission .faq-group { margin:0 0 24px; min-width:0; }
+#page-submission .faq-group[hidden] { display:none !important; }
+#page-submission .faq-group h3 { color:var(--accent); font:500 13px/1.6 var(--sans); margin:0; padding:0 0 9px; border-bottom:1px solid var(--line); }
+#page-submission .faq details { padding:0; }
+#page-submission .faq summary { list-style:none; display:grid; grid-template-columns:22px minmax(0,1fr) 18px; gap:10px; align-items:center; font-size:16px; line-height:1.65; padding:15px 0; word-break:keep-all; }
+#page-submission .faq summary::-webkit-details-marker { display:none; }
+#page-submission .faq summary::before { content:"Q."; color:var(--accent); font-weight:600; }
+#page-submission .faq summary::after { content:"+"; justify-self:end; font-size:20px; color:var(--muted); }
+#page-submission .faq details[open] summary::after { content:"−"; }
+#page-submission .faq-answer { padding:0 18px 16px 32px; }
+#page-submission .faq-answer p, #page-submission .faq-answer li { color:var(--ink); font-size:15px; line-height:1.85; word-break:keep-all; overflow-wrap:break-word; }
+#page-submission .faq-answer p { margin:0 0 10px; }
+#page-submission .faq-answer p:last-child { margin-bottom:0; }
+#page-submission .faq-answer ul { margin:8px 0 0; padding-left:20px; }
+#page-submission .submission-steps { list-style:none; padding:0; margin:0 0 40px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0 24px; }
+#page-submission .submission-steps li { padding:18px 0; border-bottom:1px solid var(--line); min-width:0; }
+#page-submission .submission-steps .eyebrow { color:var(--accent); }
+#page-submission .submission-steps h3 { font:500 19px/1.5 var(--serif); margin:5px 0; word-break:keep-all; }
+#page-submission .submission-steps p { font-size:14px; color:var(--muted); margin:0; word-break:keep-all; }
+#page-submission .submission-prep { grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:clamp(26px,4.4vw,60px); }
+#page-submission .submission-prep .submission-checklist { margin-top:0; }
+@media(max-width:800px) {
+  #page-submission .submission-faq-layout, #page-submission .submission-prep { grid-template-columns:1fr; gap:24px; }
+  #page-submission .submission-steps { grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 16px; }
+  #page-submission .faq-answer { padding-left:28px; padding-right:4px; }
+}
