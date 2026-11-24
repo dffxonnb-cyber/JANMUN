@@ -7,8 +7,9 @@
     <meta name="theme-color" content="#f5f2eb">
     <title>잔문 殘文 — 독립 문학 편집실</title>
     <link rel="icon" type="image/svg+xml" href="assets/janmun-mark.svg">
-    <link rel="stylesheet" href="css/style.css?v=0.9.8">
-    <script src="js/main.js?v=0.9.8" defer></script>
+    <link rel="stylesheet" href="css/style.css?v=0.9.9">
+    <script src="js/news-data.js?v=0.9.9" defer></script>
+    <script src="js/main.js?v=0.9.9" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">본문 바로가기</a>
@@ -87,7 +88,7 @@
           </div>
         </section>
 
-        <div class="home-notice"><span class="eyebrow">편집실 소식</span><a href="#news">잔문은 창립을 준비하고 있다. <span aria-hidden="true">→</span></a></div>
+        <div class="home-notice"><span class="eyebrow">편집실 소식</span><a href="#news/founding">잔문은 창립을 준비하고 있다. <span aria-hidden="true">→</span></a></div>
         <div class="resume" id="resume" hidden>
           <div><span class="eyebrow">마지막으로 읽은 글</span><a id="resume-link" href="#archive"></a></div>
           <button id="resume-clear" type="button">기록 지우기</button>
@@ -543,11 +544,20 @@
         </div>
       </section>
       <section class="view shell" id="page-news" hidden>
-        <div class="page-title"><span class="eyebrow">편집실 기록</span><h1>소식</h1><p>잔문의 모집, 출간 및 운영에 관한 안내를 모읍니다.</p></div>
-        <div class="page-body news-list">
-          <article class="news-item"><span class="eyebrow">창립 안내 · 준비 중</span><h2>잔문은 창립을 준비하고 있습니다.</h2><p>현재 창립 문서를 공개하고 첫 동인 활동과 공동 소설집을 기획하는 단계입니다. 구체적인 모집 일정과 출간 계획은 확정된 뒤 안내하겠습니다.</p><a class="textlink" href="#about">설립의 말 읽기 ↗</a></article>
-          <article class="news-item"><span class="eyebrow">모집 안내 · 미접수</span><h2>원고와 동인 신청은 아직 받지 않습니다.</h2><p>작품 제출 방법과 창작 윤리 기준, 개인정보 및 원고 보관 절차를 준비하고 있습니다.</p><a class="textlink" href="#submission">투고 안내 ↗</a></article>
+        <div class="notice-intro">
+          <header class="notice-heading"><span class="notice-rule" aria-hidden="true"></span><span class="eyebrow">殘文 · NOTICE</span><h1>소식</h1><p>잔문의 공식 안내.</p></header>
+          <div class="notice-intro-copy"><p>모집과 출간, 행사 및 운영에 관한 소식을 전한다. 잔문의 활동 일정과 주요 변경 사항은 이곳에서 확인할 수 있다.</p></div>
         </div>
+        <div class="page-body notice-board" id="news-board">
+          <div class="notice-categories" role="group" aria-label="소식 분류"><button type="button" data-news-category="all" aria-pressed="true">전체</button><button type="button" data-news-category="notice" aria-pressed="false">공지</button><button type="button" data-news-category="members" aria-pressed="false">동인 모집</button><button type="button" data-news-category="submission" aria-pressed="false">원고 모집</button><button type="button" data-news-category="publication" aria-pressed="false">출간</button><button type="button" data-news-category="events" aria-pressed="false">행사</button><button type="button" data-news-category="operations" aria-pressed="false">운영</button></div>
+          <div class="notice-search"><input id="news-query" type="search" placeholder="제목 또는 본문 검색" aria-label="소식 검색"><select id="news-status" aria-label="진행 상태"><option value="all">모든 상태</option><option>안내</option><option>준비 중</option><option>미접수</option><option>기획 중</option><option>모집 중</option><option>모집 마감</option><option>종료</option></select></div>
+          <div id="news-pinned" class="notice-pinned"></div>
+          <div class="notice-results"><span id="news-count" aria-live="polite"></span><span>최근 등록순</span></div>
+          <div class="notice-table-head" aria-hidden="true"><span>분류</span><span>제목</span><span>상태</span><span>게시일</span></div>
+          <div id="news-list" class="notice-list"></div>
+          <div id="news-pagination" class="notice-pagination" aria-label="공지 목록 페이지"></div>
+        </div>
+        <article id="news-detail" class="page-body notice-detail" hidden></article>
       </section>
       
     </main>
