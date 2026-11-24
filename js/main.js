@@ -45,7 +45,8 @@
     theme: read("theme", "light") === "dark" ? "dark" : "light",
     size: Number(read("size", 18)),
     focus: false,
-    page: "home"
+    page: "home",
+    route: null
   };
   state.size = Number.isFinite(state.size) ? Math.min(25, Math.max(15, state.size)) : 18;
 
@@ -100,8 +101,10 @@
     const requested = location.hash.slice(1) || "home";
     const id = requested === "journal" ? "archive" : (requested.startsWith("news/") ? "news" : (pages.includes(requested) ? requested : "home"));
     if (requested === "journal") archiveCategory = "journal";
-    else if (id === "archive" && state.page !== "archive") archiveCategory = "all";
-    const changed = state.page !== id;
+    else if (requested === "archive" && state.route !== "archive") archiveCategory = "all";
+    const changed = state.route !== requested;
+    state.route = requested;
+    pendingSelection = null;
     setFocus(false, false);
     state.page = id;
 
@@ -112,7 +115,9 @@
 
     $$(".view").forEach(view => { view.hidden = view.id !== "page-" + id; });
     $$(".nav a, .mobile-dock a").forEach(link => {
-      if (link.getAttribute("href") === "#" + id) {
+      const target = link.getAttribute("href");
+      const active = target === "#" + id && !(requested === "journal" && link.closest(".mobile-dock"));
+      if (active || (requested === "journal" && target === "#journal")) {
         link.setAttribute("aria-current", "page");
       } else {
         link.removeAttribute("aria-current");
@@ -282,7 +287,6 @@
     $("#archive-empty-actions").hidden = !pending;
     fillList($("#saved-list"), articles.filter(article => state.saved.includes(article.id)),
       "아직 저장한 글이 없습니다. 아카이브에서 읽고 싶은 글을 저장해 보세요.");
-    updateSaves();
     renderLibrary();
   }
 
@@ -290,6 +294,7 @@
     const query = $("#search-query").value.trim();
     const target = $("#search-results");
     const results = articles.filter(article => matches(article, query));
+    const noticeResults = notices.filter(n => [n.title, ...n.body, newsCategories[n.category]].join(" ").toLowerCase().includes(query.toLowerCase()));
     target.replaceChildren();
 
     for (const article of results) {
@@ -303,7 +308,13 @@
       link.append(element("small", "", excerpt));
       target.append(link);
     }
-    if (!results.length) target.textContent = "검색 결과가 없습니다.";
+    for (const notice of noticeResults) {
+      const link = element("a", "", "소식 · " + notice.title);
+      link.href = "#news/" + notice.id;
+      link.append(element("small", "", notice.body[0].slice(0, 85) + (notice.body[0].length > 85 ? "…" : "")));
+      target.append(link);
+    }
+    if (!results.length && !noticeResults.length) target.textContent = "검색 결과가 없습니다.";
   }
 
   function openSearch() {
@@ -373,7 +384,15 @@
   ["#archive-author", "#archive-year", "#archive-sort"].forEach(id => $(id).addEventListener("change", renderLists));
   document.querySelectorAll("[data-archive-category]").forEach(button => button.addEventListener("click", () => {
     archiveCategory = button.dataset.archiveCategory;
-    if (location.hash === "#journal" && archiveCategory !== "journal") history.replaceState(null, "", "#archive");
+    const hash = archiveCategory === "journal" ? "#journal" : "#archive";
+    if (location.hash !== hash) history.replaceState(null, "", hash);
+    state.route = hash.slice(1);
+    $$(".nav a, .mobile-dock a").forEach(link => {
+      const href = link.getAttribute("href");
+      const active = (href === "#archive" && !(archiveCategory === "journal" && link.closest(".mobile-dock"))) || (href === "#journal" && archiveCategory === "journal");
+      if (active) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    });
     renderLists();
   }));
   $("#focus-exit").addEventListener("click", () => setFocus(false));
@@ -391,6 +410,11 @@
 
   document.addEventListener("click", event => {
     if (!event.target.closest(".mast") && nav.classList.contains("open")) closeNav();
+    const anchor = event.target.closest('a[href="#archive"]');
+    if (anchor && location.hash === "#archive" && archiveCategory !== "all") {
+      archiveCategory = "all";
+      renderLists();
+    }
     const button = event.target.closest("button");
     if (!button) return;
 
@@ -597,11 +621,13 @@
   $("#quote-close").addEventListener("click", () => quoteDialog.close());
   quoteDialog.addEventListener("click", event => { if (event.target === quoteDialog) quoteDialog.close(); });
   $("#library-export").addEventListener("click", exportLibrary);
-  document.addEventListener("selectionchange", () => {
-    const selection = selectedQuote();
-    if (selection) pendingSelection = selection;
+  // Capture the live selection immediately before the collect button steals focus.
+  document.addEventListener("pointerdown", event => {
+    pendingSelection = event.target.closest("[data-collect]") ? selectedQuote() : null;
   });
-  window.addEventListener("hashchange", () => { pendingSelection = null; });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Tab" || event.key === "Escape") pendingSelection = null;
+  });
   document.addEventListener("click", event => {
     const button = event.target.closest("button");
     if (!button) return;
@@ -707,7 +733,14 @@
     const detail = $("#news-detail"), board = $("#news-board");
     board.hidden = Boolean(item);
     detail.hidden = !item;
-    if(!item) { renderNews(); return; }
+    if (!item) {
+      if (requested.startsWith("news/")) {
+        history.replaceState(null, "", "#news");
+        state.route = "news";
+        notify("해당 공지를 찾을 수 없습니다.");
+      }
+      renderNews(); return;
+    }
     detail.replaceChildren();
     const back = element("a","textlink","← 소식 목록"); back.href="#news";
     const header=element("header","notice-detail-head");
