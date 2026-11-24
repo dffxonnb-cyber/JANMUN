@@ -1334,3 +1334,75 @@ html[data-theme="dark"] .reading {
   .reading .article-head::before { display: none; }
   .reading .article-head h1, .reading .prose strong, #page-about .prose p { color: #222; }
 }
+
+/* 18. Shared editorial proportions — same outer frame as the home page */
+.reading {
+  --document-title: clamp(29px, 2.7vw, 36px);
+  --document-body: 17px;
+  --document-gap: clamp(26px, 4.4vw, 60px);
+}
+.reading .crumb {
+  padding-block: 16px 10px;
+  font-size: 13px;
+}
+.reading .reader-grid {
+  display: block;
+  padding-block: 32px var(--section-gap);
+}
+.reading .reader-grid > article {
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  column-gap: var(--document-gap);
+  align-items: start;
+}
+.reading .reader-grid > article > * {
+  grid-column: 2;
+  min-width: 0;
+}
+.reading .reader-grid > article > .article-head {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  margin: 0;
+  padding-bottom: 25px;
+}
+.reading .article-head h1 {
+  font: 600 var(--document-title)/1.45 var(--serif);
+  letter-spacing: -.025em;
+}
+.reading .article-head .eyebrow { font-size: 13px; }
+.reading .article-head > p:not(.eyebrow) { font-size: 16px; line-height: 1.8; }
+.reading .reader-grid .prose {
+  font: 400 var(--document-body)/1.95 var(--serif);
+  letter-spacing: -.01em;
+  max-width: 100%;
+  padding-top: 3px;
+}
+.reading .prose p { margin-bottom: 1.45em; }
+.reading .annotation-head h2 { font-size: 20px; font-weight: 600; }
+.reading .next-reading a { font-size: 20px; }
+.reading .next-reading small { font-size: 12px; }
+.reading .reader-end-controls .outline { font-size: 14px; }
+.reading .article-end { margin-top: 24px; }
+@media (max-width: 1000px) {
+  .reading .reader-grid > article {
+    display: block;
+    max-width: 740px;
+    margin-inline: auto;
+  }
+  .reading .reader-grid > article > .article-head {
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+  }
+}
+@media (max-width: 800px) {
+  .reading { --document-title: 26px; --document-body: 16px; }
+  .reading .reader-grid { padding-top: 24px; }
+  .reading .reader-grid > article > .article-head { margin-bottom: 24px; }
+  .reading .next-reading a { font-size: 19px; }
+}
+@media print {
+  .reading .reader-grid { padding: 0; }
+  .reading .reader-grid > article { display: block; max-width: none; }
+  .reading .reader-grid > article > .article-head { margin-bottom: 24px; }
+}
