@@ -7,8 +7,8 @@
     <meta name="theme-color" content="#f5f2eb">
     <title>잔문 殘文 — 독립 문학 편집실</title>
     <link rel="icon" type="image/svg+xml" href="assets/janmun-mark.svg">
-    <link rel="stylesheet" href="css/style.css?v=0.7">
-    <script src="js/main.js?v=0.7" defer></script>
+    <link rel="stylesheet" href="css/style.css?v=0.8">
+    <script src="js/main.js?v=0.8" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">본문 바로가기</a>
@@ -23,7 +23,7 @@
       <div class="shell mast-in">
         <a class="brand" href="#home" aria-label="잔문 홈"><img class="brand-mark" src="assets/janmun-mark.svg" alt="" width="43" height="43"><span class="brand-text">잔문<small>殘文 · JANMUN</small></span></a>
         <nav class="nav" id="navigation" aria-label="주 메뉴">
-          <a href="#about">설립의 말</a><a href="#editorial">편집실</a><a href="#ethics">창작 윤리</a><a href="#members">동인</a><a href="#books">총서</a><a href="#submission">투고</a><a href="#archive">아카이브</a><a href="#news">소식</a>
+          <a href="#journal">문예지</a><a href="#about">잔문 소개</a><a href="#editorial">편집실</a><a href="#members">동인</a><a href="#books">총서</a><a href="#submission">투고</a><a href="#news">소식</a>
         </nav>
         <div class="tools">
           <button class="iconbtn" id="search-open" aria-label="글 검색" title="글 검색"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 5 5"/></svg></button>
@@ -34,92 +34,75 @@
       </div>
     </header>
     <main id="main" tabindex="-1">
+      <!-- Home: editorial masthead, lead essay and contents -->
       <section class="view shell" id="page-home">
-        <div class="hero">
-          <div class="issue-line">
-            <span class="eyebrow">창립을 준비하며</span><span class="eyebrow">二〇二七</span>
-          </div>
-          <div class="hero-grid">
-            <div class="hero-copy">
-              <span class="eyebrow">독립 문학 편집실</span>
-              <h1 class="hero-name">잔문<sup>殘文</sup></h1>
-              <span class="roman">JANMUN</span>
-              <h2>문학의 바깥을 읽는다.</h2>
-              <p>아직 독자를 만나지 못한 문학을 발굴하고, 창작의 방식을 숨기지 않아도 되는 책을 만드는 독립 문학 편집실.</p>
-              <div class="actions">
-                <a href="#about" class="primary">설립의 말 읽기 <span>↗</span></a><a href="#members" class="outline">잔문 동인 <span>→</span></a>
-              </div>
-            </div>
-            <figure class="cover cover-editorial" aria-label="잔문의 창립 표제">
-              <div class="cover-top">
-                <span>殘文</span><span>창립 문서 01</span>
-              </div>
-              <div class="print-plate">
-                <div class="plate-rule" aria-hidden="true">
-                </div>
-                <span class="plate-hanja" aria-hidden="true">未<br>讀</span>
-                <div class="plate-note">
-                  <span>아직</span><span>읽히지</span><span>않은 글.</span>
-                </div>
-                <span class="plate-mark" aria-hidden="true">殘</span>
-              </div>
-              <figcaption class="cover-bottom"><span>아무에게도 읽히지 않았으므로<br>실패했다고조차 말할 수 없는 글들.</span><span>01</span></figcaption>
-            </figure>
+        <div class="edition-line">
+          <span>독립 문학 편집실</span>
+          <span class="edition-center">문학의 바깥을 읽는다.</span>
+          <span>창립 준비 · 2027</span>
+        </div>
+        <div class="front-masthead">
+          <h1 class="front-title">잔문<span>殘文</span></h1>
+          <div class="front-imprint">
+            <span>JANMUN</span>
+            <span>아직 독자를 만나지 못한 글들에 관하여.</span>
           </div>
         </div>
-        <div class="home-notice"><span class="eyebrow">편집실 소식</span><a href="#news">잔문은 창립을 준비하고 있습니다. <span aria-hidden="true">→</span></a></div>
-        <div class="quote-band">
-          <span class="eyebrow">편집실의 말</span>
-          <blockquote>읽힌 뒤에 버려질지언정,<br>읽히기도 전에 버려지는 문학은 없었으면 한다.</blockquote>
-        </div>
-        <div class="resume" id="resume" hidden>
-          <div>
-            <span class="eyebrow">마지막으로 읽은 글</span><a id="resume-link" href="#archive"></a>
-          </div>
-          <button id="resume-clear" type="button">기록 지우기</button>
-        </div>
-        <div class="section-top">
-          <div>
-            <span class="eyebrow">창립 문서 / 01—04</span>
-            <h2>잔문의 목차</h2>
-          </div>
-          <a class="textlink" href="#archive">아카이브 전체 ↗</a>
-        </div>
-        <div class="entry-grid">
-          <a class="entry" href="#about"><span class="entry-no">01</span>
-          <h3>설립의 말</h3>
-          <p>아무에게도 읽히지 않았으므로 실패했다고조차 말할 수 없는 글들.<span class="entry-detail" data-entry-meta="about"></span></p>
-          <span class="entry-arrow" aria-hidden="true">↗</span></a><a class="entry" href="#editorial"><span class="entry-no">02</span>
-          <h3>편집 철학</h3>
-          <p>잘못 쓰인 문장을 고치는 일보다 잘못 고쳐진 문장을 되돌리는 일이 더 어려울 때가 있으므로.<span class="entry-detail" data-entry-meta="editorial"></span></p>
-          <span class="entry-arrow" aria-hidden="true">↗</span></a><a class="entry" href="#ethics"><span class="entry-no">03</span>
-          <h3>창작 윤리</h3>
-          <p>무엇만큼은 다른 누구에게도 맡기지 않았는지 알고 싶다.<span class="entry-detail" data-entry-meta="ethics"></span></p>
-          <span class="entry-arrow" aria-hidden="true">↗</span></a><a class="entry" href="#members"><span class="entry-no">04</span>
-          <h3>잔문 동인</h3>
-          <p>서로의 가장 이른 독자이자, 가장 늦게까지 남아 있는 독자로.<span class="entry-detail" data-entry-meta="members"></span></p>
-          <span class="entry-arrow" aria-hidden="true">↗</span></a>
-        </div>
-        <div class="home-bottom">
-          <figure class="editorial-image">
-            <img src="assets/afterimage.svg" alt="지워진 문장이 남아 있는 종이의 단면을 그린 잔문 전용 그래픽" width="720" height="420" loading="lazy">
+
+        <section class="front-feature" aria-labelledby="lead-title">
+          <figure class="front-art">
+            <img src="assets/afterimage.svg" alt="지워진 문장이 남아 있는 원고의 단면" width="720" height="420" fetchpriority="high">
             <figcaption><span>잔상 殘像</span><span>잔문 편집 그래픽 01</span></figcaption>
           </figure>
-          <div class="feature">
-            <div>
-              <span class="eyebrow">동인</span>
-              <h3>서로의 첫 독자로.</h3>
-              <p>잔문 동인은 각자의 글을 쓰고, 서로의 문장을 오래 들여다보는 사람들의 모임을 지향합니다. 현재 첫 활동을 준비하고 있습니다.</p>
-              <a class="outline" href="#members">동인 소개 →</a>
-            </div>
-            <div>
-              <span class="eyebrow">총서</span>
-              <h3>아직 책이 되지 않은 것들.</h3>
-              <p>첫 공동 소설집을 기획하고 있습니다. 출간 일정과 참여 작가는 결정된 뒤 공개합니다.</p>
-              <a class="outline" href="#books">총서 살펴보기 →</a>
+          <div class="front-copy">
+            <div class="front-kicker"><span>창립 문서</span><span>01 / 04</span></div>
+            <h2 id="lead-title">읽히기도 전에<br>버려지는 문학은<br>없었으면 한다.</h2>
+            <p>아직 독자를 만나지 못한 문학을 발굴하고, 창작의 방식을 숨기지 않아도 되는 책을 만드는 독립 문학 편집실.</p>
+            <div class="front-actions">
+              <a class="primary" href="#about">설립의 말 읽기 <span aria-hidden="true">↗</span></a>
+              <a class="textlink" href="#journal">문예지 둘러보기 →</a>
             </div>
           </div>
+        </section>
+
+        <div class="home-notice"><span class="eyebrow">편집실 소식</span><a href="#news">잔문은 창립을 준비하고 있습니다. <span aria-hidden="true">→</span></a></div>
+        <div class="resume" id="resume" hidden>
+          <div><span class="eyebrow">마지막으로 읽은 글</span><a id="resume-link" href="#archive"></a></div>
+          <button id="resume-clear" type="button">기록 지우기</button>
         </div>
+
+        <div class="front-index">
+          <section class="front-contents" aria-labelledby="contents-title">
+            <div class="section-top">
+              <div><span class="eyebrow">창립 문서 01—04</span><h2 id="contents-title">잔문의 목차</h2></div>
+              <a class="textlink" href="#archive">전체 보기 ↗</a>
+            </div>
+            <div class="entry-grid">
+              <a class="entry" href="#about"><span class="entry-no">01</span><h3>설립의 말</h3><p>문학의 바깥을 읽는 이유<span class="entry-detail" data-entry-meta="about"></span></p><span class="entry-arrow" aria-hidden="true">↗</span></a>
+              <a class="entry" href="#editorial"><span class="entry-no">02</span><h3>편집 철학</h3><p>우리가 좋아하는 소설에 대하여<span class="entry-detail" data-entry-meta="editorial"></span></p><span class="entry-arrow" aria-hidden="true">↗</span></a>
+              <a class="entry" href="#ethics"><span class="entry-no">03</span><h3>창작 윤리</h3><p>남긴 문장에 대한 책임<span class="entry-detail" data-entry-meta="ethics"></span></p><span class="entry-arrow" aria-hidden="true">↗</span></a>
+              <a class="entry" href="#members"><span class="entry-no">04</span><h3>잔문 동인</h3><p>서로의 가장 이른 독자로<span class="entry-detail" data-entry-meta="members"></span></p><span class="entry-arrow" aria-hidden="true">↗</span></a>
+            </div>
+          </section>
+          <aside class="front-margin">
+            <span class="eyebrow">문장 하나</span>
+            <blockquote id="front-quote">누군가에게는 평생 다른 책으로 대체할 수 없는 책이다.</blockquote>
+            <a id="front-quote-source" href="#editorial">편집 철학</a>
+            <button class="quiet-button" type="button" id="next-quote">다른 문장 <span aria-hidden="true">↻</span></button>
+          </aside>
+        </div>
+
+        <section class="front-projects" aria-labelledby="project-title">
+          <div class="section-top">
+            <div><span class="eyebrow">2027년 창립 프로젝트</span><h2 id="project-title">만들어 가는 것들</h2></div>
+          </div>
+          <div class="project-grid">
+            <a class="project" href="#journal"><span class="eyebrow">01 · 문예지</span><h3>아직 읽히지<br>않은 글.</h3><p>단편과 엽편, 창작의 기록을 발표할 공간.</p><span class="project-link">문예지 ↗</span></a>
+            <a class="project" href="#members"><span class="eyebrow">02 · 동인</span><h3>서로의<br>첫 독자로.</h3><p>서로의 글을 읽고 함께 고쳐 쓰는 사람들.</p><span class="project-link">동인 소개 ↗</span></a>
+            <a class="project" href="#books"><span class="eyebrow">03 · 총서</span><h3>한 권의 책이<br>되기까지.</h3><p>첫 공동 소설집을 준비하고 있습니다.</p><span class="project-link">총서 보기 ↗</span></a>
+          </div>
+        </section>
+        <div class="front-invitation"><div><span class="eyebrow">창작자에게</span><h2>당신의 글을 기다리는 곳.</h2><p>현재 원고 접수와 동인 모집을 준비하고 있습니다.</p></div><a href="#submission" class="outline">투고 안내 읽기 ↗</a></div>
       </section>
       <section class="view shell reading" id="page-about" hidden>
         <div class="crumb">
@@ -450,6 +433,23 @@
           <article class="news-item"><span class="eyebrow">모집 안내 · 미접수</span><h2>원고와 동인 신청은 아직 받지 않습니다.</h2><p>작품 제출 방법과 창작 윤리 기준, 개인정보 및 원고 보관 절차를 준비하고 있습니다.</p><a class="textlink" href="#submission">투고 안내 ↗</a></article>
         </div>
       </section>
+      <section class="view shell" id="page-journal" hidden>
+        <div class="page-title journal-title">
+          <span class="eyebrow">잔문 문예지 · 창립 준비</span>
+          <h1>문예지 殘文</h1>
+          <p>작품이 독자에게 도착하는 곳. 잔문의 첫 발표를 준비하고 있습니다.</p>
+        </div>
+        <div class="page-body journal-layout">
+          <div class="journal-cover"><span>殘文</span><strong>未讀</strong><span>창립 준비호 · 표지 시안</span></div>
+          <div class="journal-info">
+            <span class="status">첫 작품 발표 준비 중</span>
+            <h2>아직 발표된 작품은 없습니다.</h2>
+            <p>단편소설과 엽편, 그리고 창작에 관한 글을 이곳에 모을 예정입니다. 발표 작품과 참여 작가는 확정되는 대로 공개합니다.</p>
+            <div class="journal-categories"><span>단편소설</span><span>엽편소설</span><span>창작 기록</span></div>
+            <div class="actions"><a class="primary" href="#archive">창립 문서 읽기 ↗</a><a class="outline" href="#submission">투고 안내</a></div>
+          </div>
+        </div>
+      </section>
     </main>
     <footer class="footer">
       <div class="shell">
@@ -462,7 +462,7 @@
             <span class="eyebrow">편집실</span><a href="#about">설립의 말</a><a href="#editorial">편집 철학</a><a href="#ethics">창작 윤리</a>
           </div>
           <div>
-            <span class="eyebrow">둘러보기</span><a href="#members">동인</a><a href="#books">총서</a><a href="#submission">투고</a><a href="#archive">아카이브</a><a href="#news">소식</a><a href="#saved">나의 서재</a>
+            <span class="eyebrow">둘러보기</span><a href="#members">동인</a><a href="#books">총서</a><a href="#submission">투고</a><a href="#journal">문예지</a><a href="#archive">아카이브</a><a href="#news">소식</a><a href="#saved">나의 서재</a>
           </div>
         </div>
         <div class="footline">
@@ -470,6 +470,12 @@
         </div>
       </div>
     </footer>
+    <nav class="mobile-dock" aria-label="모바일 빠른 탐색">
+      <a href="#home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8v10h-6v-7H9v7H3z"/></svg><span>홈</span></a>
+      <a href="#journal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7a4 4 0 0 1 1 2 4 4 0 0 1 1-2h7v15h-7l-1 2-1-2H4zM12 6v15"/></svg><span>문예지</span></a>
+      <a href="#archive"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v4H4zM6 8v12h12V8M10 12h4"/></svg><span>아카이브</span></a>
+      <a href="#saved"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>나의 서재</span></a>
+    </nav>
     <dialog id="search-dialog">
       <div class="dialog-head">
         <h2>잔문의 글 검색</h2>
