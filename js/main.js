@@ -373,6 +373,15 @@
     }
   });
 
+  // Submission FAQ category filters (all questions remain accessible without JS).
+  const faqFilters = Array.from(document.querySelectorAll("#page-submission [data-faq-filter]"));
+  const faqGroups = Array.from(document.querySelectorAll("#page-submission [data-faq-group]"));
+  faqFilters.forEach(button => button.addEventListener("click", () => {
+    const key = button.dataset.faqFilter;
+    faqFilters.forEach(item => item.setAttribute("aria-pressed", String(item === button)));
+    faqGroups.forEach(group => { group.hidden = key !== "all" && group.dataset.faqGroup !== key; });
+  }));
+
   $("#draft-form").addEventListener("submit", event => {
     event.preventDefault();
     downloadDraft(event.currentTarget);
