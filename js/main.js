@@ -4,7 +4,7 @@
   // 01. Article catalogue and local preferences
   const articles = [
     { id: "about", n: "01", title: "설립의 말", sub: "문학의 바깥을 읽는 이유", type: "창립 문서" },
-    { id: "editorial", n: "02", title: "편집 철학", sub: "우리가 좋아하는 소설에 대하여", type: "창립 문서" },
+    { id: "editorial", n: "02", title: "편집 철학", sub: "무엇을 남길 것인가.", type: "창립 문서" },
     { id: "ethics", n: "03", title: "창작 윤리", sub: "남긴 문장에 대한 책임", type: "창립 문서" },
     { id: "members", n: "04", title: "잔문 동인", sub: "서로의 가장 이른 독자로", type: "창립 문서" }
   ];
@@ -585,7 +585,7 @@
 
   // 08. Editorial quote rotation
   const frontQuotes = [
-    { id: "editorial", text: "누군가에게는 평생 다른 책으로 대체할 수 없는 책이다." },
+    { id: "editorial", text: "무엇을 남길 것인가." },
     { id: "about", text: "그렇게 만든 책이 누군가의 책장에 오래 남아 있기를 바란다." },
     { id: "ethics", text: "창작의 방식을 숨기지 않는다." },
     { id: "members", text: "서로의 가장 이른 독자이자, 가장 늦게까지 남아 있는 독자로." }
