@@ -8,7 +8,7 @@
     { id: "ethics", n: "03", title: "창작 윤리", sub: "남긴 문장에 대한 책임", type: "창립 문서" },
     { id: "members", n: "04", title: "잔문 동인", sub: "서로의 가장 이른 독자로", type: "창립 문서" }
   ];
-  const pages = ["home", ...articles.map(article => article.id), "books", "submission", "archive", "saved", "news"];
+  const pages = ["home", ...articles.map(article => article.id), "books", "submission", "archive", "saved", "news", "journal"];
 
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -106,7 +106,7 @@
     }
 
     $$(".view").forEach(view => { view.hidden = view.id !== "page-" + id; });
-    $$(".nav a").forEach(link => {
+    $(".nav a, .mobile-dock a").forEach(link => {
       if (link.getAttribute("href") === "#" + id) {
         link.setAttribute("aria-current", "page");
       } else {
@@ -583,7 +583,24 @@
     }
   });
 
-  // 08. Initialization
+  // 08. Editorial quote rotation
+  const frontQuotes = [
+    { id: "editorial", text: "누군가에게는 평생 다른 책으로 대체할 수 없는 책이다." },
+    { id: "about", text: "나는 그 글들이 적어도 한 번은 읽혔으면 한다." },
+    { id: "ethics", text: "창작의 방식을 숨기지 않는다." },
+    { id: "members", text: "서로의 가장 이른 독자이자, 가장 늦게까지 남아 있는 독자로." }
+  ];
+  let frontQuoteIndex = 0;
+  $("#next-quote").addEventListener("click", () => {
+    frontQuoteIndex = (frontQuoteIndex + 1) % frontQuotes.length;
+    const quote = frontQuotes[frontQuoteIndex];
+    const article = articles.find(item => item.id === quote.id);
+    $("#front-quote").textContent = quote.text;
+    $("#front-quote-source").href = "#" + article.id;
+    $("#front-quote-source").textContent = article.title;
+  });
+
+  // 09. Initialization
   applyTheme();
   applySize();
   renderLists();
