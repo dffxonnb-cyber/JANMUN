@@ -586,7 +586,7 @@
   // 08. Editorial quote rotation
   const frontQuotes = [
     { id: "editorial", text: "누군가에게는 평생 다른 책으로 대체할 수 없는 책이다." },
-    { id: "about", text: "그렇게 만든 책이 누군가의 책장에 오래 남아 있기를 바랍니다." },
+    { id: "about", text: "그렇게 만든 책이 누군가의 책장에 오래 남아 있기를 바란다." },
     { id: "ethics", text: "창작의 방식을 숨기지 않는다." },
     { id: "members", text: "서로의 가장 이른 독자이자, 가장 늦게까지 남아 있는 독자로." }
   ];
