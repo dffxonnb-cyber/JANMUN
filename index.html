@@ -7,8 +7,8 @@
     <meta name="theme-color" content="#f5f2eb">
     <title>잔문 殘文 — 독립 문학 편집실</title>
     <link rel="icon" type="image/svg+xml" href="assets/janmun-mark.svg">
-    <link rel="stylesheet" href="css/style.css?v=0.9.7">
-    <script src="js/main.js?v=0.9.7" defer></script>
+    <link rel="stylesheet" href="css/style.css?v=0.9.8">
+    <script src="js/main.js?v=0.9.8" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">본문 바로가기</a>
@@ -292,19 +292,42 @@
         </div>
       </section>
       <section class="view shell" id="page-archive" hidden>
-        <div class="page-title">
-          <span class="eyebrow">창립 문서 01—04</span>
-          <h1>아카이브</h1>
-          <p>잔문의 창립 문서를 읽고, 다시 찾아보고 싶은 글을 모아 두세요. 작품은 발표가 시작된 뒤 추가됩니다.</p>
+        <div class="archive-intro">
+          <header class="archive-heading">
+            <span class="archive-rule" aria-hidden="true"></span>
+            <span class="eyebrow">殘文 · 文學記錄</span>
+            <h1>아카이브</h1>
+            <p>문학이 만들어지고 남겨진 자리.</p>
+          </header>
+          <div class="archive-intro-copy">
+            <p>잔문의 창립 문서부터 작가의 작품, 편집 과정과 문학에 관한 대화까지. 한 편의 글이 완성되기까지의 시간과 그 이후에 남겨진 기록을 모은다.</p>
+            <p>잔문이 지나온 시간은 이곳에 쌓인다.</p>
+          </div>
         </div>
-        <div class="page-body">
-          <div class="searchbar">
-            <input type="search" id="archive-query" placeholder="제목 또는 본문 검색" aria-label="아카이브 검색"><select id="archive-filter" aria-label="글 필터"><option value="all">모든 글</option><option value="saved">저장한 글만</option><option value="unread">읽지 않은 글</option><option value="read">읽은 글</option></select>
+        <div class="page-body archive-body">
+          <div class="archive-controls">
+            <div class="archive-categories" role="group" aria-label="기록 분류">
+              <button type="button" data-archive-category="all" aria-pressed="true">전체<span data-archive-category-count="all"></span></button>
+              <button type="button" data-archive-category="founding" aria-pressed="false">창립 문서<span data-archive-category-count="founding"></span></button>
+              <button type="button" data-archive-category="journal" aria-pressed="false">문예지<span data-archive-category-count="journal"></span></button>
+              <button type="button" data-archive-category="author" aria-pressed="false">작가 기록<span data-archive-category-count="author"></span></button>
+              <button type="button" data-archive-category="editing" aria-pressed="false">편집 기록<span data-archive-category-count="editing"></span></button>
+              <button type="button" data-archive-category="criticism" aria-pressed="false">문학 비평<span data-archive-category-count="criticism"></span></button>
+              <button type="button" data-archive-category="publication" aria-pressed="false">출간 기록<span data-archive-category-count="publication"></span></button>
+              <button type="button" data-archive-category="community" aria-pressed="false">공동체 기록<span data-archive-category-count="community"></span></button>
+            </div>
+            <div class="searchbar archive-search">
+              <input type="search" id="archive-query" placeholder="제목·본문·작가 검색" aria-label="아카이브 검색">
+              <select id="archive-filter" aria-label="독서 상태"><option value="all">모든 글</option><option value="saved">저장한 글만</option><option value="unread">읽지 않은 글</option><option value="read">읽은 글</option></select>
+              <select id="archive-author" aria-label="작가"><option value="all">모든 작가</option></select>
+              <select id="archive-year" aria-label="등록 연도"><option value="all">모든 등록 연도</option></select>
+              <select id="archive-sort" aria-label="기록 정렬"><option value="number">기록 번호순</option><option value="newest">최근 등록순</option><option value="oldest">오래된 등록순</option></select>
+            </div>
           </div>
-          <div class="archive-count" id="archive-count" aria-live="polite">
-          </div>
-          <div class="archive-list" id="archive-list">
-          </div>
+          <div class="archive-results-head"><div class="archive-count" id="archive-count" aria-live="polite"></div><a class="textlink" href="#saved">나의 서재 ↗</a></div>
+          <div class="archive-list" id="archive-list"></div>
+          <div class="archive-empty-actions" id="archive-empty-actions" hidden><a class="outline" href="#submission">투고 안내 →</a></div>
+          <p class="archive-footnote">기록의 등록일은 아카이브에 수록한 날짜이며, 최초 집필일이나 발표일과 다를 수 있다. 작가의 미공개 원고와 합평·편집 기록은 동의를 얻은 경우에만 공개한다.</p>
         </div>
       </section>
       <section class="view shell" id="page-saved" hidden>
@@ -526,23 +549,7 @@
           <article class="news-item"><span class="eyebrow">모집 안내 · 미접수</span><h2>원고와 동인 신청은 아직 받지 않습니다.</h2><p>작품 제출 방법과 창작 윤리 기준, 개인정보 및 원고 보관 절차를 준비하고 있습니다.</p><a class="textlink" href="#submission">투고 안내 ↗</a></article>
         </div>
       </section>
-      <section class="view shell" id="page-journal" hidden>
-        <div class="page-title journal-title">
-          <span class="eyebrow">잔문 문예지 · 창립 준비</span>
-          <h1>문예지 殘文</h1>
-          <p>작품이 독자에게 도착하는 곳. 잔문의 첫 발표를 준비하고 있습니다.</p>
-        </div>
-        <div class="page-body journal-layout">
-          <div class="journal-cover"><span>殘文</span><strong>未讀</strong><span>창립 준비호 · 표지 시안</span></div>
-          <div class="journal-info">
-            <span class="status">첫 작품 발표 준비 중</span>
-            <h2>아직 발표된 작품은 없습니다.</h2>
-            <p>단편소설과 엽편, 그리고 창작에 관한 글을 이곳에 모을 예정입니다. 발표 작품과 참여 작가는 확정되는 대로 공개합니다.</p>
-            <div class="journal-categories"><span>단편소설</span><span>엽편소설</span><span>창작 기록</span></div>
-            <div class="actions"><a class="primary" href="#archive">창립 문서 읽기 ↗</a><a class="outline" href="#submission">투고 안내</a></div>
-          </div>
-        </div>
-      </section>
+      
     </main>
     <footer class="footer">
       <div class="shell">
