@@ -7,8 +7,8 @@
     <meta name="theme-color" content="#f5f2eb">
     <title>잔문 殘文 — 독립 문학 편집실</title>
     <link rel="icon" type="image/svg+xml" href="assets/janmun-mark.svg">
-    <link rel="stylesheet" href="css/style.css?v=0.5">
-    <script src="js/main.js?v=0.5" defer></script>
+    <link rel="stylesheet" href="css/style.css?v=0.6">
+    <script src="js/main.js?v=0.6" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">본문 바로가기</a>
@@ -23,11 +23,11 @@
       <div class="shell mast-in">
         <a class="brand" href="#home" aria-label="잔문 홈"><img class="brand-mark" src="assets/janmun-mark.svg" alt="" width="43" height="43"><span class="brand-text">잔문<small>殘文 · JANMUN</small></span></a>
         <nav class="nav" id="navigation" aria-label="주 메뉴">
-          <a href="#about">설립의 말</a><a href="#editorial">편집실</a><a href="#ethics">창작 윤리</a><a href="#members">동인</a><a href="#books">총서</a><a href="#submission">투고</a><a href="#archive">아카이브</a>
+          <a href="#about">설립의 말</a><a href="#editorial">편집실</a><a href="#ethics">창작 윤리</a><a href="#members">동인</a><a href="#books">총서</a><a href="#submission">투고</a><a href="#archive">아카이브</a><a href="#news">소식</a>
         </nav>
         <div class="tools">
           <button class="iconbtn" id="search-open" aria-label="글 검색" title="글 검색"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 5 5"/></svg></button>
-          <a class="iconbtn" href="#saved" aria-label="읽기 목록" title="읽기 목록"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg></a>
+          <a class="iconbtn" href="#saved" aria-label="나의 서재" title="나의 서재"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg></a>
           <button class="iconbtn" id="theme" aria-label="화면 테마 전환" aria-pressed="false" title="어두운 화면"><svg viewBox="0 0 24 24"><path d="M20 15.5A9 9 0 0 1 8.5 4 9 9 0 1 0 20 15.5Z"/></svg></button>
           <button class="iconbtn mobile" id="mobile" aria-label="메뉴 열기" aria-controls="navigation" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
         </div>
@@ -67,6 +67,7 @@
             </figure>
           </div>
         </div>
+        <div class="home-notice"><span class="eyebrow">편집실 소식</span><a href="#news">잔문은 창립을 준비하고 있습니다. <span aria-hidden="true">→</span></a></div>
         <div class="quote-band">
           <span class="eyebrow">편집실의 말</span>
           <blockquote>읽힌 뒤에 버려질지언정,<br>읽히기도 전에 버려지는 문학은 없었으면 한다.</blockquote>
@@ -150,6 +151,12 @@
               <p>우리는 모든 소설이 문학이 될 수 있다고 믿지 않는다. 다만 그것이 문학인지 아닌지 판단할 독자조차 만나지 못한 채 사라지는 일에는 동의하지 않는다.</p>
               <p><strong>읽힌 뒤에 버려질지언정, 읽히기도 전에 버려지는 문학은 없었으면 한다.</strong></p>
             </div>
+            <div class="annotation-area">
+              <div class="annotation-head"><h2>읽고 남기기</h2><span class="muted">나만의 비공개 기록</span></div>
+              <p class="muted">본문의 문장을 선택하거나 아래 버튼으로 문단을 골라 저장하세요.</p>
+              <div class="actions"><button class="outline" type="button" data-collect="about">문장 수집</button><button class="outline" type="button" data-note-open="about">독서 메모 쓰기</button><a class="textlink" href="#saved">나의 서재 ↗</a></div>
+              <div class="note-editor" data-note-editor="about" hidden><label>이 글에 대한 메모<textarea rows="4" maxlength="3000" data-note-text="about" placeholder="읽으며 남은 생각을 적어 보세요."></textarea></label><div class="actions"><button class="primary" type="button" data-note-save="about">메모 저장</button><button class="outline" type="button" data-note-close="about">닫기</button></div></div>
+            </div>
             <div class="reader-end-controls">
               <button class="outline" type="button" data-read="about" aria-pressed="false">읽음 표시</button><button class="outline" type="button" data-print>인쇄 / PDF 저장</button>
             </div>
@@ -194,6 +201,12 @@
               <p>우리가 만들고 싶은 것은 누구에게나 좋은 책이 아니다.</p>
               <p>누군가에게는 평생 다른 책으로 대체할 수 없는 책이다.</p>
             </div>
+            <div class="annotation-area">
+              <div class="annotation-head"><h2>읽고 남기기</h2><span class="muted">나만의 비공개 기록</span></div>
+              <p class="muted">본문의 문장을 선택하거나 아래 버튼으로 문단을 골라 저장하세요.</p>
+              <div class="actions"><button class="outline" type="button" data-collect="editorial">문장 수집</button><button class="outline" type="button" data-note-open="editorial">독서 메모 쓰기</button><a class="textlink" href="#saved">나의 서재 ↗</a></div>
+              <div class="note-editor" data-note-editor="editorial" hidden><label>이 글에 대한 메모<textarea rows="4" maxlength="3000" data-note-text="editorial" placeholder="읽으며 남은 생각을 적어 보세요."></textarea></label><div class="actions"><button class="primary" type="button" data-note-save="editorial">메모 저장</button><button class="outline" type="button" data-note-close="editorial">닫기</button></div></div>
+            </div>
             <div class="reader-end-controls">
               <button class="outline" type="button" data-read="editorial" aria-pressed="false">읽음 표시</button><button class="outline" type="button" data-print>인쇄 / PDF 저장</button>
             </div>
@@ -235,6 +248,12 @@
               <p>무엇을 남겼고 무엇을 지웠는지, 더 나은 표현을 제안받고도 끝내 고치지 않은 것은 무엇인지. 우리는 그 선택에서 창작자의 흔적을 읽는다.</p>
               <p>창작의 방식을 숨기지 않는다. 타인의 문장을 탐하지 않는다. 자신이 내놓은 글의 책임을 기계에 돌리지 않는다.</p>
               <p>우리는 당신이 얼마나 많은 문장을 썼는지보다, 무엇만큼은 다른 누구에게도 맡기지 않았는지 알고 싶다.</p>
+            </div>
+            <div class="annotation-area">
+              <div class="annotation-head"><h2>읽고 남기기</h2><span class="muted">나만의 비공개 기록</span></div>
+              <p class="muted">본문의 문장을 선택하거나 아래 버튼으로 문단을 골라 저장하세요.</p>
+              <div class="actions"><button class="outline" type="button" data-collect="ethics">문장 수집</button><button class="outline" type="button" data-note-open="ethics">독서 메모 쓰기</button><a class="textlink" href="#saved">나의 서재 ↗</a></div>
+              <div class="note-editor" data-note-editor="ethics" hidden><label>이 글에 대한 메모<textarea rows="4" maxlength="3000" data-note-text="ethics" placeholder="읽으며 남은 생각을 적어 보세요."></textarea></label><div class="actions"><button class="primary" type="button" data-note-save="ethics">메모 저장</button><button class="outline" type="button" data-note-close="ethics">닫기</button></div></div>
             </div>
             <div class="reader-end-controls">
               <button class="outline" type="button" data-read="ethics" aria-pressed="false">읽음 표시</button><button class="outline" type="button" data-print>인쇄 / PDF 저장</button>
@@ -280,6 +299,12 @@
               <p>세상에 내놓기 전의 글은 대개 불완전하다. 우리는 그 불완전한 시간을 함께 견디고자 한다.</p>
               <p><strong>서로의 가장 이른 독자이자, 가장 늦게까지 남아 있는 독자로.</strong></p>
             </div>
+            <div class="annotation-area">
+              <div class="annotation-head"><h2>읽고 남기기</h2><span class="muted">나만의 비공개 기록</span></div>
+              <p class="muted">본문의 문장을 선택하거나 아래 버튼으로 문단을 골라 저장하세요.</p>
+              <div class="actions"><button class="outline" type="button" data-collect="members">문장 수집</button><button class="outline" type="button" data-note-open="members">독서 메모 쓰기</button><a class="textlink" href="#saved">나의 서재 ↗</a></div>
+              <div class="note-editor" data-note-editor="members" hidden><label>이 글에 대한 메모<textarea rows="4" maxlength="3000" data-note-text="members" placeholder="읽으며 남은 생각을 적어 보세요."></textarea></label><div class="actions"><button class="primary" type="button" data-note-save="members">메모 저장</button><button class="outline" type="button" data-note-close="members">닫기</button></div></div>
+            </div>
             <div class="reader-end-controls">
               <button class="outline" type="button" data-read="members" aria-pressed="false">읽음 표시</button><button class="outline" type="button" data-print>인쇄 / PDF 저장</button>
             </div>
@@ -311,13 +336,27 @@
       <section class="view shell" id="page-saved" hidden>
         <div class="page-title">
           <span class="eyebrow">나의 독서 기록</span>
-          <h1>읽기 목록</h1>
-          <p>저장한 글 <span id="save-count">0</span>편 · 이 브라우저에만 저장됩니다.</p>
+          <h1>나의 서재</h1>
+          <p>읽고, 남기고, 다시 펼쳐 보는 곳. 기록은 이 브라우저에만 저장됩니다.</p>
         </div>
         <div class="page-body">
-          <div class="archive-list" id="saved-list">
+          <div class="library-summary" aria-label="서재 현황">
+            <div><strong id="save-count">0</strong><span>저장한 글</span></div>
+            <div><strong id="finished-count">0</strong><span>읽은 글</span></div>
+            <div><strong id="quote-count">0</strong><span>수집한 문장</span></div>
+            <div><strong id="note-count">0</strong><span>독서 메모</span></div>
           </div>
-          <p><a class="outline" href="#archive">다른 글 찾기 →</a></p>
+          <div class="library-tabs" role="group" aria-label="서재 분류">
+            <button type="button" data-library-tab="saved" aria-pressed="true">보관함</button>
+            <button type="button" data-library-tab="quotes" aria-pressed="false">문장 수집</button>
+            <button type="button" data-library-tab="notes" aria-pressed="false">독서 메모</button>
+            <button type="button" data-library-tab="history" aria-pressed="false">읽은 기록</button>
+          </div>
+          <div id="library-saved" class="library-panel"><div class="archive-list" id="saved-list"></div><p><a class="outline" href="#archive">다른 글 찾기 →</a></p></div>
+          <div id="library-quotes" class="library-panel" hidden><div id="quote-list" class="archive-list"></div></div>
+          <div id="library-notes" class="library-panel" hidden><div id="note-list" class="archive-list"></div></div>
+          <div id="library-history" class="library-panel" hidden><div id="history-list" class="archive-list"></div></div>
+          <div class="library-export"><p class="muted">기기를 바꾸거나 브라우저 데이터를 삭제하기 전에 기록을 파일로 보관하세요.</p><button type="button" class="outline" id="library-export">서재 기록 내려받기 ↓</button></div>
         </div>
       </section>
       <section class="view shell" id="page-books" hidden>
@@ -402,6 +441,13 @@
           </form>
         </div>
       </section>
+      <section class="view shell" id="page-news" hidden>
+        <div class="page-title"><span class="eyebrow">편집실 기록</span><h1>소식</h1><p>잔문의 모집, 출간 및 운영에 관한 안내를 모읍니다.</p></div>
+        <div class="page-body news-list">
+          <article class="news-item"><span class="eyebrow">창립 안내 · 준비 중</span><h2>잔문은 창립을 준비하고 있습니다.</h2><p>현재 창립 문서를 공개하고 첫 동인 활동과 공동 소설집을 기획하는 단계입니다. 구체적인 모집 일정과 출간 계획은 확정된 뒤 안내하겠습니다.</p><a class="textlink" href="#about">설립의 말 읽기 ↗</a></article>
+          <article class="news-item"><span class="eyebrow">모집 안내 · 미접수</span><h2>원고와 동인 신청은 아직 받지 않습니다.</h2><p>작품 제출 방법과 창작 윤리 기준, 개인정보 및 원고 보관 절차를 준비하고 있습니다.</p><a class="textlink" href="#submission">투고 안내 ↗</a></article>
+        </div>
+      </section>
     </main>
     <footer class="footer">
       <div class="shell">
@@ -414,7 +460,7 @@
             <span class="eyebrow">편집실</span><a href="#about">설립의 말</a><a href="#editorial">편집 철학</a><a href="#ethics">창작 윤리</a>
           </div>
           <div>
-            <span class="eyebrow">둘러보기</span><a href="#members">동인</a><a href="#books">총서</a><a href="#submission">투고</a><a href="#archive">아카이브</a>
+            <span class="eyebrow">둘러보기</span><a href="#members">동인</a><a href="#books">총서</a><a href="#submission">투고</a><a href="#archive">아카이브</a><a href="#news">소식</a><a href="#saved">나의 서재</a>
           </div>
         </div>
         <div class="footline">
@@ -431,6 +477,10 @@
       <p class="search-hint">PC 단축키 Ctrl + K · ESC로 닫기</p>
       <div id="search-results" class="dialog-results" aria-live="polite">
       </div>
+    </dialog>
+    <dialog id="quote-dialog" aria-labelledby="quote-dialog-title">
+      <div class="dialog-head"><h2 id="quote-dialog-title">문장 수집</h2><button class="iconbtn" id="quote-close" type="button" aria-label="닫기">×</button></div>
+      <p class="muted">간직하고 싶은 문단을 고르세요.</p><div id="quote-options" class="quote-options"></div>
     </dialog>
     <button class="focus-exit" id="focus-exit" type="button">집중 모드 종료 ×</button>
     <div id="toast" class="toast" role="status" hidden>
