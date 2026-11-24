@@ -7,9 +7,9 @@
     <meta name="theme-color" content="#f5f2eb">
     <title>잔문 殘文 — 독립 문학 편집실</title>
     <link rel="icon" type="image/svg+xml" href="assets/janmun-mark.svg">
-    <link rel="stylesheet" href="css/style.css?v=1.0.0">
+    <link rel="stylesheet" href="css/style.css?v=1.0.1">
     <script src="js/news-data.js?v=0.9.9" defer></script>
-    <script src="js/main.js?v=0.9.10" defer></script>
+    <script src="js/main.js?v=1.0.1" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">본문 바로가기</a>
@@ -594,9 +594,9 @@
       <a href="#archive"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v4H4zM6 8v12h12V8M10 12h4"/></svg><span>아카이브</span></a>
       <a href="#saved"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>나의 서재</span></a>
     </nav>
-    <dialog id="search-dialog">
+    <dialog id="search-dialog" aria-labelledby="search-dialog-title">
       <div class="dialog-head">
-        <h2>잔문의 글 검색</h2>
+        <h2 id="search-dialog-title">잔문의 글 검색</h2>
         <button class="iconbtn" id="search-close" aria-label="검색 닫기">×</button>
       </div>
       <input type="search" id="search-query" class="dialog-search" placeholder="찾고 싶은 문장 또는 제목" aria-label="검색어">
