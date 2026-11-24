@@ -354,9 +354,9 @@ button { cursor: pointer; }
 .crumb { padding: 26px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; }
 .reader-grid {
   display: grid;
-  grid-template-columns: 164px minmax(0, 680px);
+  grid-template-columns: minmax(0, 680px);
   justify-content: center;
-  gap: clamp(30px, 5vw, 76px);
+  gap: 0;
   padding: 44px 0 70px;
 }
 .reader-aside { position: sticky; top: 106px; align-self: start; display: flex; flex-direction: column; gap: 12px; }
@@ -1242,4 +1242,11 @@ html[data-theme="dark"] #page-home {
 @media (max-width: 350px) {
   #page-home .front-imprint { max-width: 98px; }
   #page-home .front-imprint > span:last-child { font-size: 12px; }
+}
+
+/* 16. Quiet reading layout: no sidebar or utility-button stack. */
+.reading .reader-grid { grid-template-columns: minmax(0, 680px); gap: 0; }
+.reading .reader-grid > article { width: 100%; min-width: 0; }
+@media (max-width: 800px) {
+  .reading .reader-grid { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 24px; }
 }
