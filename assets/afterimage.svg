@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-labelledby="title">
+  <title id="title">잔상 — 종이의 단면과 지워진 문장</title>
+  <defs>
+    <pattern id="grain" width="9" height="13" patternUnits="userSpaceOnUse">
+      <path d="M0 1h9M2 8h3" stroke="#c1bcad" stroke-width=".45" opacity=".45"/>
+    </pattern>
+    <clipPath id="page"><path d="M177 59 529 83 510 362 158 338Z"/></clipPath>
+  </defs>
+  <rect width="720" height="420" fill="#ded9cc"/>
+  <path d="M190 52 544 89 515 369 161 332Z" fill="#888478"/>
+  <path d="M177 59 529 83 510 362 158 338Z" fill="#f0ecdf"/>
+  <g clip-path="url(#page)">
+    <path d="M150 55h390v310H150z" fill="url(#grain)"/>
+    <g stroke="#55564e" stroke-width="3" opacity=".75" transform="rotate(4 350 210)">
+      <path d="M211 119h206M211 139h252M211 159h175M211 179h236M211 219h226M211 239h182M211 259h260M211 279h144"/>
+    </g>
+    <path d="M205 174 453 190 452 203 204 187Z" fill="#292b26"/>
+    <path d="M206 250 468 268" stroke="#753d3b" stroke-width="2"/>
+  </g>
+  <path d="M61 61h68M61 61v25M659 359h-68M659 359v-25" fill="none" stroke="#797568" stroke-width="1"/>
+  <rect x="584" y="69" width="18" height="18" fill="#753d3b"/>
+</svg>
