@@ -3,12 +3,15 @@
 
   // 01. Article catalogue and local preferences
   const articles = [
-    { id: "about", n: "01", title: "설립의 말", sub: "문학의 바깥을 읽는 이유", type: "창립 문서" },
-    { id: "editorial", n: "02", title: "편집 철학", sub: "무엇을 남길 것인가.", type: "창립 문서" },
-    { id: "ethics", n: "03", title: "창작 윤리", sub: "완벽함이 아니라 정직함.", type: "창립 문서" },
-    { id: "members", n: "04", title: "잔문 동인", sub: "서로의 가장 이른 독자이자, 가장 오래 남는 독자로.", type: "창립 문서" }
+    { id: "about", n: "01", title: "설립의 말", sub: "문학의 바깥을 읽는 이유", type: "창립 문서", category: "founding", author: "잔문", archivedOn: "2026-11-24" },
+    { id: "editorial", n: "02", title: "편집 철학", sub: "무엇을 남길 것인가.", type: "창립 문서", category: "founding", author: "잔문", archivedOn: "2026-11-24" },
+    { id: "ethics", n: "03", title: "창작 윤리", sub: "완벽함이 아니라 정직함.", type: "창립 문서", category: "founding", author: "잔문", archivedOn: "2026-11-24" },
+    { id: "members", n: "04", title: "잔문 동인", sub: "서로의 가장 이른 독자이자, 가장 오래 남는 독자로.", type: "창립 문서", category: "founding", author: "잔문", archivedOn: "2026-11-24" }
   ];
-  const pages = ["home", ...articles.map(article => article.id), "books", "submission", "archive", "saved", "news", "journal"];
+  const pages = ["home", ...articles.map(article => article.id), "books", "submission", "archive", "saved", "news"];
+
+  const archiveCategories = {"all":"전체","founding":"창립 문서","journal":"문예지","author":"작가 기록","editing":"편집 기록","criticism":"문학 비평","publication":"출간 기록","community":"공동체 기록"};
+  let archiveCategory = "all";
 
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -95,7 +98,9 @@
 
   function route() {
     const requested = location.hash.slice(1) || "home";
-    const id = pages.includes(requested) ? requested : "home";
+    const id = requested === "journal" ? "archive" : (pages.includes(requested) ? requested : "home");
+    if (requested === "journal") archiveCategory = "journal";
+    else if (id === "archive" && state.page !== "archive") archiveCategory = "all";
     const changed = state.page !== id;
     setFocus(false, false);
     state.page = id;
@@ -197,7 +202,7 @@
 
   // 04. Search and archive
   function matches(article, query) {
-    const haystack = [article.title, article.sub, article.type, articleBody(article)].join(" ");
+    const haystack = [article.title, article.sub, article.type, article.author, article.archivedOn, articleBody(article)].join(" ");
     return haystack.toLowerCase().includes(query.toLowerCase().trim());
   }
 
@@ -214,6 +219,7 @@
     const link = element("a");
     link.href = "#" + article.id;
     link.append(
+      element("span", "archive-record-meta", [article.type, article.author, article.archivedOn ? "등록 " + article.archivedOn : ""].filter(Boolean).join(" · ")),
       element("h3", "", article.title),
       element("p", "", article.sub + " · " + timeFor(article) +
         (state.finished.includes(article.id) ? " · 읽음" : ""))
@@ -230,18 +236,49 @@
     if (!items.length) target.append(element("p", "empty", emptyText));
   }
 
+  function initArchiveFilters() {
+    const populate = (id, values) => {
+      const select = $(id);
+      values.forEach(value => {
+        const option = element("option", "", value);
+        option.value = value;
+        select.append(option);
+      });
+    };
+    populate("#archive-author", [...new Set(articles.map(a => a.author).filter(Boolean))].sort((a,b) => a.localeCompare(b,"ko")));
+    populate("#archive-year", [...new Set(articles.map(a => a.archivedOn?.slice(0,4)).filter(Boolean))].sort().reverse());
+  }
+
   function renderLists() {
     const query = $("#archive-query").value;
     const filter = $("#archive-filter").value;
-    const list = articles.filter(article => {
+    const author = $("#archive-author").value;
+    const year = $("#archive-year").value;
+    const sort = $("#archive-sort").value;
+    const categoryItems = articles.filter(article => archiveCategory === "all" || article.category === archiveCategory);
+    const list = categoryItems.filter(article => {
       if (!matches(article, query)) return false;
+      if (author !== "all" && article.author !== author) return false;
+      if (year !== "all" && article.archivedOn?.slice(0,4) !== year) return false;
       if (filter === "saved") return state.saved.includes(article.id);
       if (filter === "read") return state.finished.includes(article.id);
       if (filter === "unread") return !state.finished.includes(article.id);
       return true;
     });
-    $("#archive-count").textContent = list.length + "편 · 전체 " + articles.length + "편";
-    fillList($("#archive-list"), list, "조건에 맞는 글이 없습니다.");
+    const byNumber = (a,b) => a.n.localeCompare(b.n, "ko", { numeric: true });
+    const byDate = (a,b) => (a.archivedOn || "").localeCompare(b.archivedOn || "");
+    list.sort(sort === "newest" ? (a,b) => byDate(b,a) || byNumber(a,b) : sort === "oldest" ? (a,b) => byDate(a,b) || byNumber(a,b) : byNumber);
+    $$("[data-archive-category]").forEach(button => {
+      const key = button.dataset.archiveCategory;
+      const count = key === "all" ? articles.length : articles.filter(a => a.category === key).length;
+      button.setAttribute("aria-pressed", String(key === archiveCategory));
+      button.querySelector("[data-archive-category-count]").textContent = count ? String(count) : "준비 중";
+    });
+    $("#archive-count").textContent = archiveCategories[archiveCategory] + " · " + list.length + "편 / " + categoryItems.length + "편";
+    const pending = archiveCategory !== "all" && categoryItems.length === 0;
+    const empty = pending ? archiveCategories[archiveCategory] + " 기록은 아직 공개되지 않았습니다. 첫 기록을 준비하고 있습니다." : "조건에 맞는 기록이 없습니다.";
+    fillList($("#archive-list"), list, empty);
+    $("#archive-empty-actions").hidden = !pending;
     fillList($("#saved-list"), articles.filter(article => state.saved.includes(article.id)),
       "아직 저장한 글이 없습니다. 아카이브에서 읽고 싶은 글을 저장해 보세요.");
     updateSaves();
@@ -332,6 +369,12 @@
   });
   $("#archive-query").addEventListener("input", renderLists);
   $("#archive-filter").addEventListener("change", renderLists);
+  ["#archive-author", "#archive-year", "#archive-sort"].forEach(id => $(id).addEventListener("change", renderLists));
+  $("[data-archive-category]").forEach(button => button.addEventListener("click", () => {
+    archiveCategory = button.dataset.archiveCategory;
+    if (location.hash === "#journal" && archiveCategory !== "journal") history.replaceState(null, "", "#archive");
+    renderLists();
+  }));
   $("#focus-exit").addEventListener("click", () => setFocus(false));
   $("#resume-clear").addEventListener("click", () => {
     state.last = null;
@@ -612,6 +655,7 @@
   // 09. Initialization
   applyTheme();
   applySize();
+  initArchiveFilters();
   renderLists();
   route();
 })();
