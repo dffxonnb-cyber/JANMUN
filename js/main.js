@@ -371,7 +371,7 @@
   $("#archive-query").addEventListener("input", renderLists);
   $("#archive-filter").addEventListener("change", renderLists);
   ["#archive-author", "#archive-year", "#archive-sort"].forEach(id => $(id).addEventListener("change", renderLists));
-  $("[data-archive-category]").forEach(button => button.addEventListener("click", () => {
+  document.querySelectorAll("[data-archive-category]").forEach(button => button.addEventListener("click", () => {
     archiveCategory = button.dataset.archiveCategory;
     if (location.hash === "#journal" && archiveCategory !== "journal") history.replaceState(null, "", "#archive");
     renderLists();
@@ -670,7 +670,7 @@
       && (status === "all" || n.status === status)
       && [n.title, ...n.body, newsCategories[n.category], n.status].join(" ").toLowerCase().includes(query))
       .sort((a,b) => (b.date || "").localeCompare(a.date || ""));
-    $("[data-news-category]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.newsCategory === newsCategory)));
+    document.querySelectorAll("[data-news-category]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.newsCategory === newsCategory)));
     const pinned = matches.filter(n => n.pinned);
     const ordinary = matches.filter(n => !n.pinned);
     $("#news-pinned").replaceChildren(...pinned.map(n => {
@@ -723,7 +723,7 @@
     document.title=item.title+" | 잔문 殘文";
   }
   function initNews() {
-    $("[data-news-category]").forEach(button=>button.addEventListener("click",()=>{newsCategory=button.dataset.newsCategory;newsPage=1;renderNews();}));
+    document.querySelectorAll("[data-news-category]").forEach(button=>button.addEventListener("click",()=>{newsCategory=button.dataset.newsCategory;newsPage=1;renderNews();}));
     $("#news-query").addEventListener("input",()=>{newsPage=1;renderNews();});
     $("#news-status").addEventListener("change",()=>{newsPage=1;renderNews();});
     renderNews();
