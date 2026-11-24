@@ -106,7 +106,7 @@
     }
 
     $$(".view").forEach(view => { view.hidden = view.id !== "page-" + id; });
-    $(".nav a, .mobile-dock a").forEach(link => {
+    $$(".nav a, .mobile-dock a").forEach(link => {
       if (link.getAttribute("href") === "#" + id) {
         link.setAttribute("aria-current", "page");
       } else {
