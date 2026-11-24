@@ -1,6 +1,12 @@
 (() => {
   "use strict";
 
+  document.querySelectorAll("template[data-janmun-view]").forEach(t => t.replaceWith(t.content));
+  const startRoute = document.documentElement.dataset.startRoute || "home";
+  const siteRoot = document.documentElement.dataset.siteRoot || "./";
+  const routeHref = id => siteRoot + (id === "home" ? "" : id === "journal" ? "archive/" : id + "/") + (location.protocol === "file:" ? "index.html" : "") + (id === "journal" ? "?category=journal" : "");
+  document.querySelectorAll("a[data-route-link]").forEach(link => { if (location.protocol === "file:") link.href = routeHref(link.dataset.routeLink); });
+
   // 01. Article catalogue and local preferences
   const articles = [
     { id: "about", n: "01", title: "설립의 말", sub: "문학의 바깥을 읽는 이유", type: "창립 문서", category: "founding", author: "잔문", archivedOn: "2026-11-24" },
@@ -98,7 +104,14 @@
   }
 
   function route() {
-    const requested = location.hash.slice(1) || "home";
+    const fragment = location.hash.slice(1);
+    const legacy = pages.includes(fragment) || fragment === "journal" || fragment.startsWith("news/");
+    const requested = legacy ? fragment : (startRoute === "archive" && new URLSearchParams(location.search).get("category") === "journal" ? "journal" : startRoute);
+    if (legacy && location.protocol !== "file:") {
+      const known = !requested.startsWith("news/") || notices.some(n => "news/" + n.id === requested);
+      location.replace(routeHref(known ? requested : "news"));
+      return;
+    }
     const id = requested === "journal" ? "archive" : (requested.startsWith("news/") ? "news" : (pages.includes(requested) ? requested : "home"));
     if (requested === "journal") archiveCategory = "journal";
     else if (requested === "archive" && state.route !== "archive") archiveCategory = "all";
@@ -115,9 +128,9 @@
 
     $$(".view").forEach(view => { view.hidden = view.id !== "page-" + id; });
     $$(".nav a, .mobile-dock a").forEach(link => {
-      const target = link.getAttribute("href");
-      const active = target === "#" + id && !(requested === "journal" && link.closest(".mobile-dock"));
-      if (active || (requested === "journal" && target === "#journal")) {
+      const target = link.dataset.routeLink;
+      const active = target === id && !(requested === "journal" && link.closest(".mobile-dock"));
+      if (active || (requested === "journal" && target === "journal")) {
         link.setAttribute("aria-current", "page");
       } else {
         link.removeAttribute("aria-current");
@@ -136,6 +149,7 @@
     if (id === "archive" || id === "saved") renderLists();
     if (id === "news") renderNewsRoute(requested);
     if (changed) $("#main").focus({ preventScroll: true });
+    if (fragment === "note" && validIds.has(id)) openNote(id);
     window.scrollTo({ top: 0, behavior: "instant" });
     updateProgress();
   }
@@ -173,7 +187,7 @@
     const last = articles.find(article => article.id === state.last);
     $("#resume").hidden = !last;
     if (last) {
-      $("#resume-link").href = "#" + last.id;
+      $("#resume-link").href = routeHref(last.id);
       $("#resume-link").textContent = last.title + " →";
     }
   }
@@ -223,7 +237,7 @@
     const row = element("div", "archive-row");
     const number = element("span", "eyebrow", article.n);
     const link = element("a");
-    link.href = "#" + article.id;
+    link.href = routeHref(article.id);
     link.append(
       element("span", "archive-record-meta", [article.type, article.author, article.archivedOn ? "등록 " + article.archivedOn : ""].filter(Boolean).join(" · ")),
       element("h3", "", article.title),
@@ -299,7 +313,7 @@
 
     for (const article of results) {
       const link = element("a", "", article.title + " — " + article.sub);
-      link.href = "#" + article.id;
+      link.href = routeHref(article.id);
       const body = articleBody(article).replace(/\s+/g, " ").trim();
       const matchIndex = query ? body.toLowerCase().indexOf(query.toLowerCase()) : 0;
       const start = Math.max(0, matchIndex - 20);
@@ -310,7 +324,7 @@
     }
     for (const notice of noticeResults) {
       const link = element("a", "", "소식 · " + notice.title);
-      link.href = "#news/" + notice.id;
+      link.href = routeHref("news/" + notice.id);
       link.append(element("small", "", notice.body[0].slice(0, 85) + (notice.body[0].length > 85 ? "…" : "")));
       target.append(link);
     }
@@ -325,8 +339,7 @@
   }
 
   async function share(id) {
-    const url = new URL(location.href);
-    url.hash = id;
+    const url = new URL(routeHref(id), location.href);
     try {
       await navigator.clipboard.writeText(url.href);
       notify("링크를 복사했어요.");
@@ -384,12 +397,9 @@
   ["#archive-author", "#archive-year", "#archive-sort"].forEach(id => $(id).addEventListener("change", renderLists));
   document.querySelectorAll("[data-archive-category]").forEach(button => button.addEventListener("click", () => {
     archiveCategory = button.dataset.archiveCategory;
-    const hash = archiveCategory === "journal" ? "#journal" : "#archive";
-    if (location.hash !== hash) history.replaceState(null, "", hash);
-    state.route = hash.slice(1);
     $$(".nav a, .mobile-dock a").forEach(link => {
-      const href = link.getAttribute("href");
-      const active = (href === "#archive" && !(archiveCategory === "journal" && link.closest(".mobile-dock"))) || (href === "#journal" && archiveCategory === "journal");
+      const target = link.dataset.routeLink;
+      const active = (target === "archive" && !(archiveCategory === "journal" && link.closest(".mobile-dock"))) || (target === "journal" && archiveCategory === "journal");
       if (active) link.setAttribute("aria-current", "page");
       else link.removeAttribute("aria-current");
     });
@@ -410,11 +420,6 @@
 
   document.addEventListener("click", event => {
     if (!event.target.closest(".mast") && nav.classList.contains("open")) closeNav();
-    const anchor = event.target.closest('a[href="#archive"]');
-    if (anchor && location.hash === "#archive" && archiveCategory !== "all") {
-      archiveCategory = "all";
-      renderLists();
-    }
     const button = event.target.closest("button");
     if (!button) return;
 
@@ -499,7 +504,7 @@
       const item = element("div", "record-item");
       const meta = element("span", "eyebrow");
       const source = element("a", "", article.title);
-      source.href = "#" + article.id;
+      source.href = routeHref(article.id);
       meta.append(source);
       const actions = element("div", "actions");
       actions.append(recordButton("문장 복사", "quoteCopy", quote.id),
@@ -515,7 +520,7 @@
       if (!notes[article.id]) continue;
       const item = element("div", "record-item");
       const source = element("a", "eyebrow", article.title + " ↗");
-      source.href = "#" + article.id;
+      source.href = routeHref(article.id);
       const actions = element("div", "actions");
       actions.append(recordButton("메모 수정", "noteEdit", article.id),
         recordButton("삭제", "noteRemove", article.id));
@@ -638,8 +643,7 @@
     if (data.noteClose) $("[data-note-editor=" + data.noteClose + "]").hidden = true;
     if (data.noteSave) saveNote(data.noteSave);
     if (data.noteEdit) {
-      location.hash = data.noteEdit;
-      setTimeout(() => openNote(data.noteEdit), 50);
+      location.href = routeHref(data.noteEdit) + "#note";
     }
     if (data.noteRemove) {
       delete notes[data.noteRemove];
@@ -675,7 +679,7 @@
     const quote = frontQuotes[frontQuoteIndex];
     const article = articles.find(item => item.id === quote.id);
     $("#front-quote").textContent = quote.text;
-    $("#front-quote-source").href = "#" + article.id;
+    $("#front-quote-source").href = routeHref(article.id);
     $("#front-quote-source").textContent = article.title;
   });
 
@@ -686,7 +690,7 @@
   const newsPageSize = 10;
   function noticeLink(item, className) {
     const a = element("a", className, item.title);
-    a.href = "#news/" + item.id;
+    a.href = routeHref("news/" + item.id);
     return a;
   }
   function renderNews() {
@@ -735,22 +739,21 @@
     detail.hidden = !item;
     if (!item) {
       if (requested.startsWith("news/")) {
-        history.replaceState(null, "", "#news");
-        state.route = "news";
-        notify("해당 공지를 찾을 수 없습니다.");
+        location.replace(routeHref("news"));
+        return;
       }
       renderNews(); return;
     }
     detail.replaceChildren();
-    const back = element("a","textlink","← 소식 목록"); back.href="#news";
+    const back = element("a","textlink","← 소식 목록"); back.href=routeHref("news");
     const header=element("header","notice-detail-head");
     header.append(element("span","eyebrow",newsCategories[item.category]+" · "+item.status),element("h2","",item.title),element("p","notice-date","게시 "+item.date+(item.updated?" · 수정 "+item.updated:"")));
     const body=element("div","notice-detail-copy");
     item.body.forEach(p=>body.append(element("p","",p)));
     const actions=element("div","actions");
-    item.links.forEach(l=>{const link=element("a","outline",l.label+" →");link.href=l.href;actions.append(link);});
+    item.links.forEach(l=>{const link=element("a","outline",l.label+" →");link.href=routeHref(l.href.replace(/^#/, ""));actions.append(link);});
     const copy=element("button","outline","공지 링크 복사");copy.type="button";
-    copy.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(location.href);notify("공지 링크를 복사했어요.");}catch{window.prompt("이 링크를 복사하세요.",location.href);}});
+    copy.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(new URL(routeHref("news/" + item.id), location.href).href);notify("공지 링크를 복사했어요.");}catch{window.prompt("이 링크를 복사하세요.",new URL(routeHref("news/" + item.id), location.href).href);}});
     actions.append(copy);
     detail.append(back,header,body,actions);
     document.title=item.title+" | 잔문 殘文";
