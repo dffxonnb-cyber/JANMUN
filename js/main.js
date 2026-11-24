@@ -98,7 +98,7 @@
 
   function route() {
     const requested = location.hash.slice(1) || "home";
-    const id = requested === "journal" ? "archive" : (pages.includes(requested) ? requested : "home");
+    const id = requested === "journal" ? "archive" : (requested.startsWith("news/") ? "news" : (pages.includes(requested) ? requested : "home"));
     if (requested === "journal") archiveCategory = "journal";
     else if (id === "archive" && state.page !== "archive") archiveCategory = "all";
     const changed = state.page !== id;
@@ -129,6 +129,7 @@
     if ($("#quote-dialog").open) $("#quote-dialog").close();
     updateReading();
     if (id === "archive" || id === "saved") renderLists();
+    if (id === "news") renderNewsRoute(requested);
     if (changed) $("#main").focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: "instant" });
     updateProgress();
@@ -652,10 +653,87 @@
     $("#front-quote-source").textContent = article.title;
   });
 
+  // Public notices: editable data in news-data.js; no backend required.
+  const newsCategories = {"all":"전체","notice":"공지","members":"동인 모집","submission":"원고 모집","publication":"출간","events":"행사","operations":"운영"};
+  const notices = Array.isArray(window.JANMUN_NEWS) ? window.JANMUN_NEWS : [];
+  let newsCategory = "all", newsPage = 1;
+  const newsPageSize = 10;
+  function noticeLink(item, className) {
+    const a = element("a", className, item.title);
+    a.href = "#news/" + item.id;
+    return a;
+  }
+  function renderNews() {
+    const query = $("#news-query").value.trim().toLowerCase();
+    const status = $("#news-status").value;
+    const matches = notices.filter(n => (newsCategory === "all" || n.category === newsCategory)
+      && (status === "all" || n.status === status)
+      && [n.title, ...n.body, newsCategories[n.category], n.status].join(" ").toLowerCase().includes(query))
+      .sort((a,b) => (b.date || "").localeCompare(a.date || ""));
+    $("[data-news-category]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.newsCategory === newsCategory)));
+    const pinned = matches.filter(n => n.pinned);
+    const ordinary = matches.filter(n => !n.pinned);
+    $("#news-pinned").replaceChildren(...pinned.map(n => {
+      const box = element("div","notice-pin");
+      box.append(element("span","eyebrow","중요 공지"),noticeLink(n,"notice-pin-title"),element("p","",n.body[0]),element("span","notice-date",n.date));
+      return box;
+    }));
+    $("#news-pinned").hidden = !pinned.length;
+    $("#news-count").textContent = "전체 " + matches.length + "건";
+    const pages = Math.max(1,Math.ceil(ordinary.length/newsPageSize));
+    newsPage = Math.max(1,Math.min(newsPage,pages));
+    const list = $("#news-list");
+    list.replaceChildren(...ordinary.slice((newsPage-1)*newsPageSize,newsPage*newsPageSize).map(n => {
+      const row = element("div","notice-row");
+      row.append(element("span","notice-category",newsCategories[n.category]),noticeLink(n,"notice-row-title"),element("span","notice-state",n.status),element("time","notice-date",n.date));
+      row.lastElementChild.dateTime = n.date;
+      return row;
+    }));
+    if (!matches.length) list.append(element("p","empty",query || status !== "all" ? "조건에 맞는 소식이 없습니다." : "아직 등록된 소식이 없습니다."));
+    else if (!ordinary.length) list.append(element("p","notice-empty","추가 등록된 소식은 없습니다."));
+    const pager = $("#news-pagination");
+    pager.replaceChildren();
+    pager.hidden = pages <= 1;
+    for(let p=1;p<=pages;p++) {
+      const button=element("button","outline",String(p));
+      button.type="button";
+      if(p===newsPage) button.setAttribute("aria-current","page");
+      button.addEventListener("click",()=>{newsPage=p;renderNews();});
+      pager.append(button);
+    }
+  }
+  function renderNewsRoute(requested) {
+    const item = requested.startsWith("news/") ? notices.find(n=>n.id===requested.slice(5)) : null;
+    const detail = $("#news-detail"), board = $("#news-board");
+    board.hidden = Boolean(item);
+    detail.hidden = !item;
+    if(!item) { renderNews(); return; }
+    detail.replaceChildren();
+    const back = element("a","textlink","← 소식 목록"); back.href="#news";
+    const header=element("header","notice-detail-head");
+    header.append(element("span","eyebrow",newsCategories[item.category]+" · "+item.status),element("h2","",item.title),element("p","notice-date","게시 "+item.date+(item.updated?" · 수정 "+item.updated:"")));
+    const body=element("div","notice-detail-copy");
+    item.body.forEach(p=>body.append(element("p","",p)));
+    const actions=element("div","actions");
+    item.links.forEach(l=>{const link=element("a","outline",l.label+" →");link.href=l.href;actions.append(link);});
+    const copy=element("button","outline","공지 링크 복사");copy.type="button";
+    copy.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(location.href);notify("공지 링크를 복사했어요.");}catch{window.prompt("이 링크를 복사하세요.",location.href);}});
+    actions.append(copy);
+    detail.append(back,header,body,actions);
+    document.title=item.title+" | 잔문 殘文";
+  }
+  function initNews() {
+    $("[data-news-category]").forEach(button=>button.addEventListener("click",()=>{newsCategory=button.dataset.newsCategory;newsPage=1;renderNews();}));
+    $("#news-query").addEventListener("input",()=>{newsPage=1;renderNews();});
+    $("#news-status").addEventListener("change",()=>{newsPage=1;renderNews();});
+    renderNews();
+  }
+
   // 09. Initialization
   applyTheme();
   applySize();
   initArchiveFilters();
+  initNews();
   renderLists();
   route();
 })();
