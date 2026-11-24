@@ -6,9 +6,9 @@
     <meta name="description" content="독립 문학 편집실 잔문 殘文. 문학의 바깥을 읽는다.">
     <meta name="theme-color" content="#f5f2eb">
     <title>잔문 殘文 — 독립 문학 편집실</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2379363b'/%3E%3Ctext x='32' y='47' fill='%23f2efe7' font-size='43' text-anchor='middle' font-family='serif'%3E%E6%AE%98%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="css/style.css?v=0.4">
-    <script src="js/main.js?v=0.4" defer></script>
+    <link rel="icon" type="image/svg+xml" href="assets/janmun-mark.svg">
+    <link rel="stylesheet" href="css/style.css?v=0.5">
+    <script src="js/main.js?v=0.5" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">본문 바로가기</a>
@@ -21,7 +21,7 @@
     </div>
     <header class="mast">
       <div class="shell mast-in">
-        <a class="brand" href="#home" aria-label="잔문 홈"><span class="seal">殘文</span><span class="brand-text">잔문<small>JANMUN</small></span></a>
+        <a class="brand" href="#home" aria-label="잔문 홈"><img class="brand-mark" src="assets/janmun-mark.svg" alt="" width="43" height="43"><span class="brand-text">잔문<small>殘文 · JANMUN</small></span></a>
         <nav class="nav" id="navigation" aria-label="주 메뉴">
           <a href="#about">설립의 말</a><a href="#editorial">편집실</a><a href="#ethics">창작 윤리</a><a href="#members">동인</a><a href="#books">총서</a><a href="#submission">투고</a><a href="#archive">아카이브</a>
         </nav>
@@ -99,6 +99,10 @@
           <p>서로의 가장 이른 독자이자, 가장 늦게까지 남아 있는 독자로.<span class="entry-detail" data-entry-meta="members"></span></p>
           <span class="entry-arrow" aria-hidden="true">↗</span></a>
         </div>
+        <figure class="editorial-image">
+          <img src="assets/afterimage.svg" alt="지워진 문장이 남아 있는 종이의 단면을 그린 잔문 전용 그래픽" width="720" height="420" loading="lazy">
+          <figcaption><span>잔상 殘像</span><span>잔문 편집 그래픽 01</span></figcaption>
+        </figure>
         <div class="feature">
           <div>
             <span class="eyebrow">동인</span>
@@ -350,6 +354,7 @@
           <h1>투고</h1>
           <p>창작의 방식을 숨기지 않고도 작품을 건넬 수 있는 곳.</p>
           <span class="status">현재 모집 및 원고 접수 준비 중</span>
+          <p class="recruit-note">동인 및 작가 모집 일정, 원고 제출 방법, 심사 기준은 확정 후 이 페이지에서 공개합니다.</p>
         </div>
         <div class="page-body submission-grid">
           <div>
@@ -373,6 +378,15 @@
               </details>
             </div>
             <p><a class="textlink" href="#ethics">창작 윤리 전문 읽기 ↗</a></p>
+            <div class="submission-checklist">
+              <h2>투고 전 확인할 사항</h2>
+              <p class="muted">준비용 목록입니다. 아직 확정된 모집 요강은 아닙니다.</p>
+              <label><input type="checkbox"> 원고 제목과 필명 정리</label>
+              <label><input type="checkbox"> 작품 소개 작성</label>
+              <label><input type="checkbox"> 창작 및 AI 활용 과정 정리</label>
+              <label><input type="checkbox"> 인용 문장과 타인의 권리 확인</label>
+              <label><input type="checkbox"> 최종 원고 파일 별도 보관</label>
+            </div>
           </div>
           <form class="draft" id="draft-form">
             <h2>투고 준비 노트</h2>
