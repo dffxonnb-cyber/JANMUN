@@ -397,10 +397,10 @@
   let pendingSelection = null;
 
   function libraryTab(name) {
-    $("[data-library-tab]").forEach(button => {
+    $$("[data-library-tab]").forEach(button => {
       button.setAttribute("aria-pressed", String(button.dataset.libraryTab === name));
     });
-    $(".library-panel").forEach(panel => { panel.hidden = panel.id !== "library-" + name; });
+    $$(".library-panel").forEach(panel => { panel.hidden = panel.id !== "library-" + name; });
   }
 
   function recordButton(label, key, value) {
@@ -482,7 +482,7 @@
     }
     const options = $("#quote-options");
     options.replaceChildren();
-    $("#page-" + id + " .prose p").forEach(paragraph => {
+    $$("#page-" + id + " .prose p").forEach(paragraph => {
       const button = element("button", "quote-option", paragraph.textContent.trim());
       button.type = "button";
       button.addEventListener("click", () => {
